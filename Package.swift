@@ -4,27 +4,31 @@
 import PackageDescription
 
 let package = Package(
-    name: "xenon-view-sdk",
+    name: "xenon_view_sdk",
+    platforms: [
+        .macOS(.v12), .iOS(.v15), .tvOS(.v15)
+    ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "xenon-view-sdk",
-            targets: ["xenon-view-sdk"]),
+            name: "xenon_view_sdk",
+            targets: ["xenon_view_sdk"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url:"https://github.com/Quick/Quick.git", from: "5.0.1"),
+        .package(url:"https://github.com/Quick/Quick", from: "5.0.1"),
         .package(url:"https://github.com/Quick/Nimble", from: "10.0.0"),
+        .package(name: "Mockingbird", url:"https://github.com/birdrides/mockingbird", from: "0.20.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "xenon-view-sdk",
+            name: "xenon_view_sdk",
             dependencies: []),
         .testTarget(
-            name: "xenon-view-sdkTests",
-            dependencies: ["xenon-view-sdk", "Quick", "Nimble"]),
+            name: "xenon_view_sdkTests",
+            dependencies: ["xenon_view_sdk", "Quick", "Nimble", "Mockingbird"]),
     ]
 )

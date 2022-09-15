@@ -1,9 +1,15 @@
 .DS_Store
+.coverage.o
+coverage/
 /.build
 /Packages
+Tests/xenon_view_sdkTests/mocks/
 /*.xcodeproj
 xcuserdata/
 DerivedData/
 .swiftpm/config/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+lib_InternalSwiftSyntaxParser.dylib
+.mockingbird/
+project.json

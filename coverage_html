@@ -1,0 +1,7 @@
+#!/bin/bash
+rm -f .coverage.o
+swift test --enable-code-coverage
+ld -r -o .coverage.o $(find .build/debug/xenon_view_sdk.build -name '*.o' -print0 | xargs -0 printf '%s ')
+xcrun llvm-cov show --ignore-filename-regex='(.build|Tests)[/\\].*' -instr-profile $(swift test --show-codecov-path | xargs dirname)/default.profdata -format=html -output-dir=coverage .coverage.o
+xcrun llvm-cov report   --ignore-filename-regex='(.build|Tests)[/\\].*'   -instr-profile $(swift test --show-codecov-path | xargs dirname)/default.profdata .coverage.o
+

@@ -1,5 +1,5 @@
 # xenon-swift-sdk
-The Xenon View Swift SDK is the JavaScript SDK to interact with [XenonView](https://xenonview.com).
+The Xenon View Swift SDK is the Swift SDK to interact with [XenonView](https://xenonview.com).
 
 **Table of contents:**
 
@@ -15,16 +15,24 @@ The Xenon View Swift SDK is the JavaScript SDK to interact with [XenonView](http
 ## <a name="installation"></a>
 ## Installation
 
-You can install the Xenon View SDK from [npm](https://www.npmjs.com/package/xenon-view-sdk):
+You can install the Xenon View SDK from [Github](https://github.com/xenonview-com/view-swift-sdk):
 
-Via npm:
-```bash
-npm install xenon-view-sdk
+Via Swift Package Manager by adding to your dependencies section:
+```swift
+dependencies: [
+        // Dependencies declare other packages that this package depends on.
+        // .package(url: /* package url */, from: "1.0.0"),
+        .package(url:"https://github.com/xenonview-com/view-swift-sdk", from: "0.0.1"),
+        ...
 ```
-
-Via yarn:
-```bash
-yarn add xenon-view-sdk
+Then including as a dependency in your app in the targets section:
+```swift
+    targets: [
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        .target(
+            name: "<your app name>",
+            dependencies: ["xenon_view_sdk"]),
 ```
 
 ## <a name="how-to-use"></a>
@@ -35,11 +43,11 @@ The Xenon View SDK can be used in your application to provide a whole new level 
 ### Instantiation
 The View SDK is a JS module you'll need to include in your application. After inclusion, you'll need to init the singleton object:
 
-```javascript
-import Xenon from 'xenon_view_sdk';
+```swift
+import struct xenon_view_sdk.Xenon
 
 // start by initializing Xenon View
-Xenon.init('<API KEY>');
+Xenon.init("<API KEY>")
 ```
 Of course, you'll have to make the following modifications to the above code:
 - Replace `<API KEY>` with your [api key](https://xenonview.com/api-get)

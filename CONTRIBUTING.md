@@ -2,16 +2,14 @@
 
 ## Dependencies
 
-* yarn
-* chromedriver
-
+* swift (provided by xcode application)
 
 ## Installing library dependencies
 
-Before development, you'll need to install development dependencies (npm packages) by running:
+Before development, you'll need to install development dependencies by running:
 
 ```bash
-yarn install
+swift build
 ```
 
 ## Running tests
@@ -19,34 +17,31 @@ yarn install
 You can run the tests for the whole project in the root directory by simply running:
 
 ```bash
-yarn test
+swift test
 ```
 
 The following sections show how to run testing variants during development.
-
-### Watch
-
-To run the tests in "watch mode" (runs any tests touched by unstaged Git changes and re-runs tests when files change):
-```bash
-yarn test:watch
-```
 
 ### Coverage
 
 To run the tests in "coverage mode" (runs all tests then calculates coverage for each dir/file):
 ```bash
-yarn test:coverage
+./coverage_report
+# --- OR ---
+swift test --enable-code-coverage
+xcrun llvm-cov report   --ignore-filename-regex='(.build|Tests)[/\\].*'   -instr-profile $(swift test --show-codecov-path | xargs dirname)/default.profdata $(find .build/debug/xenon_view_sdk.build -name '*.o' -print0 | xargs -0 printf '%s ')
 ```
 
 # Publishing
 
 _We (package maintainers) handle this step so this is more of internal notes:_
 
-To publish the package (we use ```np```, for help go [here](https://github.com/sindresorhus/np)):
-
-```shell
-yarn release
+To publish the package make a new git tag with the semantic version:
+```bash
+git tag -a v0.0.0 -m "0.0.0 <change summary>"
 ```
+Additionally create a GitHub release from the tag.
+
 
 # Contributing
 
@@ -62,8 +57,8 @@ Note: if you would like to submit an "_obvious fix_" for something like a typo, 
 
 ## Working on features
 
-If you're interested on working on a feature for us we have a backlog, please contact us directly and we can find a good one.
+If you're interested on working on a feature for us, we have a backlog, please contact us directly, and we can find a good one.
 
 ## Code reviews
 
-All submissions, including submissions by project members, require review and we use GitHub's pull requests for this purpose. Please consult [GitHub Help](https://help.github.com/articles/about-pull-requests/) if you need more information about using pull requests.
+All submissions, including submissions by project members, require review, and we use GitHub's pull requests for this purpose. Please consult [GitHub Help](https://help.github.com/articles/about-pull-requests/) if you need more information about using pull requests.
