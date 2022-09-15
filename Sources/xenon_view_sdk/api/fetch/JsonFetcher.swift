@@ -11,7 +11,6 @@ public protocol JsonFetcherClient {
 extension URLSession: JsonFetcherClient {
 }
 
-
 public class JsonFetcher {
     public enum Errors: Error {
         case clientUrlIncorrect(String)
@@ -41,6 +40,12 @@ public class JsonFetcher {
         mutatableRequest.setValue("application/json", forHTTPHeaderField: "accept")
         if (data["accessToken"] != nil) {
             mutatableRequest.setValue("Bearer \(data["accessToken"] as! String)", forHTTPHeaderField: "authorization")
+        }
+        if (data["headers"] != nil){
+            let headers: Dictionary<String, String> = data["headers"] as! Dictionary<String, String>
+            for (header, value) in headers {
+                mutatableRequest.setValue(value, forHTTPHeaderField: header)
+            }
         }
         let urlRequest = mutatableRequest;
         return Task {
@@ -81,9 +86,9 @@ public class JsonFetcher {
             default:
                 throw Errors.serverResponseError(
                         description:
-                            HTTPURLResponse.localizedString(
-                                    forStatusCode: (response as! HTTPURLResponse).statusCode
-                            ),
+                        HTTPURLResponse.localizedString(
+                                forStatusCode: (response as! HTTPURLResponse).statusCode
+                        ),
                         response: httpResponse)
             }
             do {
@@ -91,7 +96,8 @@ public class JsonFetcher {
                 if let dictFromJSON = decoded as? [String: Any] {
                     return dictFromJSON
                 }
-            } catch {}
+            } catch {
+            }
             throw Errors.serverInvalidJson(
                     description: "Server returned non-JSON response.",
                     response: httpResponse)

@@ -70,6 +70,24 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
+        //describe("when custom headers set") {
+    func beforeEachWhenCustomHeaderSet() async throws {
+        try await beforeEachWhenDefaultFetch()
+        data["headers"] = ["x-custom1":"value1", "x-custom2": "value2"]
+        given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
+        let _ = try? await JsonFetcher(client_: client).fetch(data: data).value
+    }
+    func testWhenDefaultFetchWhenCustomHeaderSetThenRequestWithCustomHeaders() async throws {
+        try await beforeEachWhenCustomHeaderSet()
+
+        let request = ArgumentCaptor<URLRequest>()
+        verify(try await client.data(for: request.any(), delegate: nil)).wasCalled()
+        let requested: URLRequest = request.value!
+        expect(requested.value(forHTTPHeaderField: "x-custom1")).to(equal("value1"))
+        expect(requested.value(forHTTPHeaderField: "x-custom2")).to(equal("value2"))
+
+        afterEachTop()
+    }
         //describe("when the request is successful") {
     func beforeEachWhenTheRequestIsSuccessful() async throws {
         try await beforeEachWhenDefaultFetch()
