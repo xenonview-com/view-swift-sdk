@@ -15,6 +15,7 @@ final class JsonFetcherTests: XCTestCase {
     var data: Dictionary<String, Any> = [:]
     var returned: Dictionary<String, Any> = [:]
     var caught: String = ""
+    let token: String = "<token>"
     let expected: Dictionary<String, String> = ["result": "success"]
     func beforeEachTop() {
         data = ["url": "https://example.blah/"]
@@ -62,7 +63,10 @@ final class JsonFetcherTests: XCTestCase {
 
         let request = ArgumentCaptor<URLRequest>()
         verify(try await client.data(for: request.any(), delegate: nil)).wasCalled()
-        expect(request.value!.url).to(equal(URL(string: data["url"] as! String)!))
+        let requested: URLRequest = request.value!
+        expect(requested.url).to(equal(URL(string: data["url"] as! String)!))
+        expect(requested.value(forHTTPHeaderField: "accept")).to(equal("application/json"))
+
 
         afterEachTop()
     }
@@ -231,7 +235,26 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
+    // describe("when authorized fetch"){
+    func beforeEachWhenAuthorizedFetch() async throws {
+        beforeEachTop()
+        data["method"] =  "GET"
+        data["accessToken"] = token
+        given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
+        let _ = try? await JsonFetcher(client_: client).fetch(data: data).value
+    }
+    func testWhenWhenAuthorizedFetchThenRequestsBaseUrlWithAuthorizationHeader() async throws {
+        try await beforeEachWhenAuthorizedFetch()
 
+        let request = ArgumentCaptor<URLRequest>()
+        verify(try await client.data(for: request.any(), delegate: nil)).wasCalled()
+        let requested: URLRequest = request.value!
+        expect(requested.value(forHTTPHeaderField: "accept")).to(equal("application/json"))
+        expect(requested.value(forHTTPHeaderField: "authorization")).to(equal("Bearer " + token))
+
+
+        afterEachTop()
+    }
 }
 
 

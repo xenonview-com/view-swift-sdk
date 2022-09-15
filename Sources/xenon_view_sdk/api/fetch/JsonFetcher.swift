@@ -37,7 +37,12 @@ public class JsonFetcher {
         guard let url = URL(string: urlString) else {
             throw Errors.clientUrlIncorrect("\(urlString)")
         }
-        let urlRequest = URLRequest(url: url)
+        var mutatableRequest = URLRequest(url: url)
+        mutatableRequest.setValue("application/json", forHTTPHeaderField: "accept")
+        if (data["accessToken"] != nil) {
+            mutatableRequest.setValue("Bearer \(data["accessToken"] as! String)", forHTTPHeaderField: "authorization")
+        }
+        let urlRequest = mutatableRequest;
         return Task {
             var data: Data;
             var response: URLResponse;
