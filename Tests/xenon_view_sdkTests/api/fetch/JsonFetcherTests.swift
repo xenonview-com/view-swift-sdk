@@ -2,12 +2,14 @@
 // Created by Woydziak, Luke on 9/12/22.
 //
 
+import Foundation
 import Quick
 import Nimble
 import Mockingbird
 import xenon_view_sdk
 
-extension String: Error {}
+extension String: Error {
+}
 
 final class JsonFetcherTests: XCTestCase {
 //describe("JsonFetcher")
@@ -16,31 +18,38 @@ final class JsonFetcherTests: XCTestCase {
     var returned: Dictionary<String, Any> = [:]
     var caught: String = ""
     let token: String = "<token>"
+    let body: Dictionary<String, String> = ["test": "Body"]
     let expected: Dictionary<String, String> = ["result": "success"]
+
     func beforeEachTop() {
         data = ["url": "https://example.blah/"]
     }
+
     func afterEachTop() {
         data = [:]
         returned = [:]
         client = mock(JsonFetcherClient.self)
         caught = ""
     }
+
     func testJsonFetcherCanBeConstructed() {
         beforeEachTop()
         expect(JsonFetcher()).notTo(beNil())
         afterEachTop()
     }
+
     //describe("when no url") {
+
     func beforeEachWhenNoUrl() async throws {
         beforeEachTop()
         data["url"] = ""
         do {
             let _ = try await JsonFetcher(client_: client).fetch(data: data).value
-        } catch JsonFetcher.Errors.clientUrlIncorrect(let reason){
+        } catch JsonFetcher.Errors.clientUrlIncorrect(let reason) {
             caught = reason
         }
     }
+
     func testWhenNoUrlThenThrows() async throws {
         try await beforeEachWhenNoUrl()
 
@@ -48,35 +57,43 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
+
     //describe("when default fetch") {
+
     func beforeEachWhenDefaultFetch() async throws {
         beforeEachTop()
-        data["method"] =  "GET"
+        data["method"] = "GET"
     }
+
     func justBeforeEachWhenDefaultFetch() async throws {
         try await beforeEachWhenDefaultFetch()
         given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
         let _ = try? await JsonFetcher(client_: client).fetch(data: data).value
     }
+
     func testWhenDefaultFetchThenRequestsBaseUrl() async throws {
         try await justBeforeEachWhenDefaultFetch()
 
         let request = ArgumentCaptor<URLRequest>()
         verify(try await client.data(for: request.any(), delegate: nil)).wasCalled()
         let requested: URLRequest = request.value!
+        expect(requested.httpMethod).to(equal("GET"))
         expect(requested.url).to(equal(URL(string: data["url"] as! String)!))
         expect(requested.value(forHTTPHeaderField: "accept")).to(equal("application/json"))
 
 
         afterEachTop()
     }
-        //describe("when custom headers set") {
+
+    //describe("when custom headers set") {
+
     func beforeEachWhenCustomHeaderSet() async throws {
         try await beforeEachWhenDefaultFetch()
-        data["headers"] = ["x-custom1":"value1", "x-custom2": "value2"]
+        data["headers"] = ["x-custom1": "value1", "x-custom2": "value2"]
         given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
         let _ = try? await JsonFetcher(client_: client).fetch(data: data).value
     }
+
     func testWhenDefaultFetchWhenCustomHeaderSetThenRequestWithCustomHeaders() async throws {
         try await beforeEachWhenCustomHeaderSet()
 
@@ -88,7 +105,9 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
-        //describe("when the request is successful") {
+
+    //describe("when the request is successful") {
+
     func beforeEachWhenTheRequestIsSuccessful() async throws {
         try await beforeEachWhenDefaultFetch()
         let encoder = JSONEncoder()
@@ -100,6 +119,7 @@ final class JsonFetcherTests: XCTestCase {
         given(try await client.data(for: any(), delegate: nil)).willReturn((responseData, response))
         returned = try await JsonFetcher(client_: client).fetch(data: data).value
     }
+
     func testWhenDefaultFetchWhenTheRequestIsSuccessfulThenResolvesTheTaskWithJsonResponse() async throws {
         try await beforeEachWhenTheRequestIsSuccessful()
 
@@ -107,21 +127,23 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
-        //describe("when the request is successful with bad JSON") {
+
+    //describe("when the request is successful with bad JSON") {
+
     func beforeEachWhenTheRequestIsSuccessfulWithBadJson() async throws {
         try await beforeEachWhenDefaultFetch()
         let responseData: Data = "garbage".data(using: .utf8)!
-        print("here")
         let urlString: String = data["url"] as! String
         let url: URL = URL(string: urlString)!
         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: [:])!
         given(try await client.data(for: any(), delegate: nil)).willReturn((responseData, response))
         do {
             let _ = try await JsonFetcher(client_: client).fetch(data: data).value
-        } catch JsonFetcher.Errors.serverInvalidJson(let description, _){
+        } catch JsonFetcher.Errors.serverInvalidJson(let description, _) {
             caught = description
         }
     }
+
     func testWhenDefaultFetchWhenTheRequestIsSuccessfulWithBadJsonThenResolvesTheTaskWithJsonResponse() async throws {
         try await beforeEachWhenTheRequestIsSuccessfulWithBadJson()
 
@@ -129,8 +151,10 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
-        //describe("when the request is not successful") {
-    func beforeEachWhenTheRequestIsNotSuccessful() async throws     {
+
+    //describe("when the request is not successful") {
+
+    func beforeEachWhenTheRequestIsNotSuccessful() async throws {
         try await beforeEachWhenDefaultFetch()
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
@@ -141,10 +165,11 @@ final class JsonFetcherTests: XCTestCase {
         given(try await client.data(for: any(), delegate: nil)).willReturn((responseData, response))
         do {
             let _ = try await JsonFetcher(client_: client).fetch(data: data).value
-        } catch JsonFetcher.Errors.serverRejectedError(let description, _, _){
+        } catch JsonFetcher.Errors.serverRejectedError(let description, _, _) {
             caught = description
         }
     }
+
     func testWhenDefaultFetchWhenTheRequestIsNotSuccessfulThenRejectsTheTaskWithError() async throws {
         try await beforeEachWhenTheRequestIsNotSuccessful()
 
@@ -152,7 +177,9 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
-        //describe("when the request has no data") {
+
+    //describe("when the request has no data") {
+
     func beforeEachWhenTheRequestHasNoData() async throws {
         try await beforeEachWhenDefaultFetch()
         let encoder = JSONEncoder()
@@ -163,6 +190,7 @@ final class JsonFetcherTests: XCTestCase {
         given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), response))
         returned = try await JsonFetcher(client_: client).fetch(data: data).value
     }
+
     func testWhenDefaultFetchWhenTheRequestHasNoDataThenResolvesTheTaskWithResponse() async throws {
         try await beforeEachWhenTheRequestHasNoData()
 
@@ -170,7 +198,9 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
-        //describe("when the request generally errors") {
+
+    //describe("when the request generally errors") {
+
     func beforeEachWhenTheRequestGenerallyErrors() async throws {
         try await beforeEachWhenDefaultFetch()
         let urlString: String = data["url"] as! String
@@ -179,10 +209,11 @@ final class JsonFetcherTests: XCTestCase {
         given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), response))
         do {
             let _ = try await JsonFetcher(client_: client).fetch(data: data).value
-        } catch JsonFetcher.Errors.serverResponseError(let description, _){
+        } catch JsonFetcher.Errors.serverResponseError(let description, _) {
             caught = description
         }
     }
+
     func testWhenDefaultFetchWhenTheRequestGenerallyErrorsThenRejectsTheTaskWithError() async throws {
         try await beforeEachWhenTheRequestGenerallyErrors()
 
@@ -190,7 +221,9 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
-        //describe("when the request unauthorized"){
+
+    //describe("when the request unauthorized"){
+
     func beforeEachWhenTheRequestUnauthorized() async throws {
         try await beforeEachWhenDefaultFetch()
         let encoder = JSONEncoder()
@@ -202,18 +235,21 @@ final class JsonFetcherTests: XCTestCase {
         given(try await client.data(for: any(), delegate: nil)).willReturn((responseData, response))
         do {
             let _ = try await JsonFetcher(client_: client).fetch(data: data).value
-        } catch JsonFetcher.Errors.serverRejectedError(let description, _, _){
+        } catch JsonFetcher.Errors.serverRejectedError(let description, _, _) {
             caught = description
         }
     }
-    func testWhenDefaultFetchbeforeEachWhenTheRequestUnauthorizedThenRejectsTheTaskWithError() async throws {
+
+    func testWhenDefaultFetchBeforeEachWhenTheRequestUnauthorizedThenRejectsTheTaskWithError() async throws {
         try await beforeEachWhenTheRequestUnauthorized()
 
         expect(self.caught).to(equal("unauthorized"))
 
         afterEachTop()
     }
-        //describe("when the request unauthorized and corrupt"){
+
+    //describe("when the request unauthorized and corrupt"){
+
     func beforeEachWhenTheRequestUnauthorizedAndCorrupt() async throws {
         try await beforeEachWhenDefaultFetch()
         let encoder = JSONEncoder()
@@ -225,10 +261,11 @@ final class JsonFetcherTests: XCTestCase {
         given(try await client.data(for: any(), delegate: nil)).willReturn((responseData, response))
         do {
             let _ = try await JsonFetcher(client_: client).fetch(data: data).value
-        } catch JsonFetcher.Errors.serverResponseError(let description, _){
+        } catch JsonFetcher.Errors.serverResponseError(let description, _) {
             caught = description
         }
     }
+
     func testWhenDefaultFetchWhenTheRequestUnauthorizedAndCorruptThenRejectsTheTaskWithError() async throws {
         try await beforeEachWhenTheRequestUnauthorizedAndCorrupt()
 
@@ -236,31 +273,63 @@ final class JsonFetcherTests: XCTestCase {
 
         afterEachTop()
     }
-        //describe("when the network down")
+
+    //describe("when the network down")
+
     func beforeEachWhenTheNetworkDown() async throws {
         try await beforeEachWhenDefaultFetch()
-        givenSwift(try await client.data(for: any(), delegate: nil)).will{(_,_) in throw "network down"}
+        givenSwift(try await client.data(for: any(), delegate: nil)).will { (_, _) in
+            throw "network down"
+        }
         do {
             let _ = try await JsonFetcher(client_: client).fetch(data: data).value
-        } catch JsonFetcher.Errors.noNetworkError(let description){
+        } catch JsonFetcher.Errors.noNetworkError(let description) {
             caught = description
         }
     }
-    func testWhenDefaultFetchbeforeEachWhenTheNetworkDownThenRequestsBaseUrl() async throws {
+
+    func testWhenDefaultFetchWhenTheNetworkDownThenThrows() async throws {
         try await beforeEachWhenTheNetworkDown()
 
-        expect(self.caught).to(equal("Your internet connection appears to have gone down."))
+        expect(self.caught).to(contain("The operation couldn’t be completed"))
 
         afterEachTop()
     }
+
+    //describe("when the server down")
+
+    func beforeEachWhenTheServerDown() async throws {
+        try await beforeEachWhenDefaultFetch()
+
+        givenSwift(try await client.data(for: any(), delegate: nil)).will {
+            (_, _) in
+            throw NSError(domain: "", code: -1004, userInfo: [NSLocalizedDescriptionKey: "CustomError"]) as Error
+        }
+        do {
+            let _ = try await JsonFetcher(client_: client).fetch(data: data).value
+        } catch JsonFetcher.Errors.serverError(let description) {
+            caught = description
+        }
+    }
+
+    func testWhenDefaultFetchWhenTheServerDownThenThrows() async throws {
+        try await beforeEachWhenTheServerDown()
+
+        expect(self.caught).to(contain("CustomError"))
+
+        afterEachTop()
+    }
+
     // describe("when authorized fetch"){
+
     func beforeEachWhenAuthorizedFetch() async throws {
         beforeEachTop()
-        data["method"] =  "GET"
+        data["method"] = "GET"
         data["accessToken"] = token
         given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
         let _ = try? await JsonFetcher(client_: client).fetch(data: data).value
     }
+
     func testWhenWhenAuthorizedFetchThenRequestsBaseUrlWithAuthorizationHeader() async throws {
         try await beforeEachWhenAuthorizedFetch()
 
@@ -270,9 +339,124 @@ final class JsonFetcherTests: XCTestCase {
         expect(requested.value(forHTTPHeaderField: "accept")).to(equal("application/json"))
         expect(requested.value(forHTTPHeaderField: "authorization")).to(equal("Bearer " + token))
 
+        afterEachTop()
+    }
+
+    // describe("when posting fetch"){
+
+    func beforeEachWhenPostingFetch() async throws {
+        beforeEachTop()
+        data["method"] = "POST"
+        data["body"] = body
+    }
+
+    func justBeforeEachWhenPostingFetch() async throws {
+        try await beforeEachWhenPostingFetch()
+        given(try await client.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
+        let _ = try? await JsonFetcher(client_: client).fetch(data: data).value
+    }
+
+    func testWhenPostingFetchThenRequestsBaseUrl() async throws {
+        try await justBeforeEachWhenPostingFetch()
+
+        let request = ArgumentCaptor<URLRequest>()
+        verify(try await client.data(for: request.any(), delegate: nil)).wasCalled()
+        let requested: URLRequest = request.value!
+        expect(requested.httpMethod).to(equal("POST"))
+        let body = String(data: requested.httpBody!, encoding: String.Encoding.utf8)
+        expect(body).to(equal("{\"test\":\"Body\"}"))
+        expect(requested.value(forHTTPHeaderField: "accept")).to(equal("application/json"))
+        expect(requested.value(forHTTPHeaderField: "content-type")).to(equal("application/json; charset=utf-8"))
 
         afterEachTop()
     }
+
+    // describe("when bad body"){
+
+    func beforeEachWhenBadBody() async throws {
+        try await beforeEachWhenPostingFetch()
+        data["body"] = "bad"
+        do {
+            let _ = try await JsonFetcher(client_: client).fetch(data: data).value
+        } catch JsonFetcher.Errors.clientBodyIncorrect(let reason) {
+            caught = reason
+        }
+    }
+
+    func testWhenPostingFetchWhenBadBodyThenThrows() async throws {
+        try await beforeEachWhenBadBody()
+
+        expect(self.caught).to(equal("*** +[NSJSONSerialization dataWithJSONObject:options:error:]: Invalid top-level type in JSON write"))
+
+        afterEachTop()
+    }
+
+    // describe("when self signed allowed fetch"){
+
+    func beforeEachWhenSelfSignedAllowed() async throws {
+        try await beforeEachWhenDefaultFetch()
+        data["ignore-certificate-errors"] = true
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let responseData = try encoder.encode(expected)
+        let urlString: String = data["url"] as! String
+        let url: URL = URL(string: urlString)!
+        let response: URLResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: [:])!
+        given(try await client.data(for: any(), delegate: any())).willReturn((responseData, response))
+        returned = try await JsonFetcher(client_: client).fetch(data: data).value
+    }
+
+    func testWhenDefaultFetchWhenSelfSignedAllowedThenReturnsExpected() async throws {
+        try await beforeEachWhenSelfSignedAllowed()
+
+        expect((self.returned as! Dictionary<String, String>)).to(equal(expected))
+
+        afterEachTop()
+    }
+
+    func testSelfSignedHandler() throws {
+        let sender = mock(URLAuthenticationChallengeSender.self)
+        class TestURLProtectionSpace: Foundation.URLProtectionSpace {
+            var internalServerTrust: SecTrust?
+            override var serverTrust: SecTrust? {
+                internalServerTrust
+            }
+        }
+        let protectionSpace = TestURLProtectionSpace(
+                host: "localhost", port: 80, protocol: "",
+                realm: "",
+                authenticationMethod: NSURLAuthenticationMethodServerTrust
+        )
+        var optionalTrust: SecTrust?
+        let testCertFile = "./Tests/xenon_view_sdkTests/api/fetch/DigiCertTLSECCP384RootG5.crt"
+        let data = try Data(contentsOf: URL(fileURLWithPath: testCertFile))
+        let cfData = CFDataCreateWithBytesNoCopy(
+                nil,
+                (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count),
+                data.count, kCFAllocatorNull
+        )
+        let cert = SecCertificateCreateWithData(kCFAllocatorDefault, cfData!)
+        let policy = SecPolicyCreateBasicX509()
+        let status = SecTrustCreateWithCertificates(cert!,
+                policy,
+                &optionalTrust)
+        guard status == errSecSuccess else {
+            print(status)
+            throw "could not create SecTrust"
+        }
+        let serverTrust = optionalTrust!
+        protectionSpace.internalServerTrust = serverTrust;
+        let challenge = URLAuthenticationChallenge(
+                protectionSpace: protectionSpace,
+                proposedCredential: nil,
+                previousFailureCount: 0,
+                failureResponse: nil, error: nil,
+                sender: sender
+        )
+        JsonFetcherDelegate().urlSession(URLSession(), task: URLSessionTask(), didReceive: challenge) {
+            disposition, credential in
+            expect(disposition).to(beAKindOf(URLSession.AuthChallengeDisposition.self))
+            expect(credential).to(beAKindOf(URLCredential.self))
+        }
+    }
 }
-
-

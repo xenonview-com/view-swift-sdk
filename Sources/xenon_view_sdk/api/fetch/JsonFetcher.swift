@@ -3,6 +3,8 @@
 //
 
 import Foundation
+import ExceptionCatcher
+
 
 public protocol JsonFetcherClient {
     func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse)
@@ -14,9 +16,11 @@ extension URLSession: JsonFetcherClient {
 public class JsonFetcher {
     public enum Errors: Error {
         case clientUrlIncorrect(String)
+        case clientBodyIncorrect(String)
         case serverRejectedError(description: String, response: HTTPURLResponse, details: Dictionary<String, String>)
         case serverResponseError(description: String, response: HTTPURLResponse)
         case serverUnexpectedError
+        case serverError(String)
         case serverInvalidJson(description: String, response: HTTPURLResponse)
         case noNetworkError(String)
     }
@@ -30,6 +34,8 @@ public class JsonFetcher {
     public init(client_: JsonFetcherClient) {
         client = client_
     }
+
+
 
     public func fetch(data: Dictionary<String, Any>) throws -> Task<[String: Any], Error> {
         let urlString: String = data["url"] as! String
@@ -47,16 +53,45 @@ public class JsonFetcher {
                 mutatableRequest.setValue(value, forHTTPHeaderField: header)
             }
         }
+        let method: String = (data["method"] as! String)
+        mutatableRequest.httpMethod = method
+        if (method == "POST"){
+            mutatableRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "content-type")
+            if (data["body"] != nil) {
+                do {
+                    let body = (data["body"] as Any)
+                    try ExceptionCatcher.catch {
+                        let httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+                        mutatableRequest.httpBody = httpBody
+                    }
+                } catch {
+                    throw Errors.clientBodyIncorrect("\(error.localizedDescription)")
+                }
+            }
+        }
+
+        var delegate: URLSessionTaskDelegate? = nil;
+        if (data["ignore-certificate-errors"] != nil && data["ignore-certificate-errors"] as! Bool){
+            delegate = JsonFetcherDelegate();
+        }
+
+
         let urlRequest = mutatableRequest;
+        let sessionDelegate = delegate;
         return Task {
             var data: Data;
             var response: URLResponse;
             do {
-                let (data_, response_) = try await self.client.data(for: urlRequest, delegate: nil)
+                let (data_, response_) = try await self.client.data(for: urlRequest, delegate: sessionDelegate)
                 data = data_
                 response = response_
             } catch {
-                throw Errors.noNetworkError("Your internet connection appears to have gone down.")
+                switch (error._code){
+                case -1004:
+                    throw Errors.serverError(error.localizedDescription)
+                default:
+                    throw Errors.noNetworkError(error.localizedDescription)
+                }
             }
             guard let httpResponse: HTTPURLResponse = response as? HTTPURLResponse else {
                 throw Errors.serverUnexpectedError
@@ -102,5 +137,16 @@ public class JsonFetcher {
                     description: "Server returned non-JSON response.",
                     response: httpResponse)
         }
+    }
+}
+
+public class JsonFetcherDelegate : NSObject {}
+
+extension JsonFetcherDelegate: URLSessionTaskDelegate{
+    public func urlSession(_ session: URLSession,
+                           task: URLSessionTask,
+                           didReceive challenge: URLAuthenticationChallenge,
+                           completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.useCredential, URLCredential(trust: challenge.protectionSpace.serverTrust!))
     }
 }

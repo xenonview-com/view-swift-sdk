@@ -20,13 +20,14 @@ let package = Package(
         .package(url:"https://github.com/Quick/Quick", from: "5.0.1"),
         .package(url:"https://github.com/Quick/Nimble", from: "10.0.0"),
         .package(name: "Mockingbird", url:"https://github.com/birdrides/mockingbird", from: "0.20.0"),
+        .package(url: "https://github.com/sindresorhus/ExceptionCatcher", from: "2.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "xenon_view_sdk",
-            dependencies: []),
+            dependencies: ["ExceptionCatcher"]),
         .testTarget(
             name: "xenon_view_sdkTests",
             dependencies: ["xenon_view_sdk", "Quick", "Nimble", "Mockingbird"]),
