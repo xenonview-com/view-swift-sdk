@@ -1,5 +1,5 @@
 //
-// Created by Woydziak, Luke on 9/26/22.
+// Created by Woydziak, Luke on 9/27/22.
 //
 
 import Foundation
@@ -9,22 +9,25 @@ import Mockingbird
 import xenon_view_sdk
 
 
-final class JourneyApiTests: QuickSpec {
+final class DeanonymizeApiTest: QuickSpec {
     override func spec() {
-        describe("JourneyApi") {
+        describe("DeanonymizeApi") {
             let apiUrl = "https://app.xenonview.com"
             let JsonFetcher = mock(Fetchable.self)
-            let dataWithoutJourney: Dictionary<String, Any> = [
+            let dataWithoutPerson: Dictionary<String, Any> = [
                 "id": "somevalue",
                 "token": "<testToken>",
                 "timestamp": 0.1
             ]
-            let journeyData = ["step"]
-            let dataWithJourney: Dictionary<String, Any> = [
+            let personData = [
+                "name": "Test Name",
+                "email": "test@example.com"
+            ]
+            let dataWithPerson: Dictionary<String, Any> = [
                 "id": "somevalue",
                 "token": "<testToken>",
                 "timestamp": 0.1,
-                "journey": journeyData
+                "person": personData
             ]
             beforeEach {
                 clearInvocations(on: JsonFetcher)
@@ -33,25 +36,40 @@ final class JourneyApiTests: QuickSpec {
                 })
             }
             it("can be default constructed") {
-                expect(JourneyApi(apiUrl: apiUrl)).notTo(beNil())
+                expect(DeanonymizeApi(apiUrl: apiUrl)).notTo(beNil())
             }
-            describe("when parameters do not include Journey") {
+            describe("when parameters do not include person") {
+                var caught: String = ""
                 beforeEach {
-                    _ = try! JourneyApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithoutJourney)
+                    do {
+                        _ = try DeanonymizeApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithoutPerson)
+                    } catch DeanonymizeApi.Errors.parameterError(let reason) {
+                        caught = reason
+                    } catch {
+                        print (error)
+                    }
                 }
-                it("then requests Journey Api") {
+                it("then throws") {
+                    expect(caught).to(equal("No person data received."))
+                }
+            }
+            describe("when parameters include person") {
+                beforeEach {
+                    _ = try! DeanonymizeApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithPerson)
+                }
+                it("then requests deanonymize") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
                     verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
                     let params = fetchArgs.value!
                     expect(params["method"] as? String).to(equal("POST"))
-                    expect(params["url"] as? String).to(equal(apiUrl + "/journey"))
+                    expect(params["url"] as? String).to(equal(apiUrl + "/deanonymize"))
                     let body: Dictionary<String, Any> = params["body"] as! Dictionary<String, Any>
-                    expect(body["name"] as? String).to(equal("ApiJourney"))
+                    expect(body["name"] as? String).to(equal("ApiDeanonymize"))
                     let headers: Dictionary<String, String> = params["requestHeaders"] as! Dictionary<String, String>
                     expect(headers["content-type"]).to(equal("application/json"))
                     expect(headers["authorization"]).to(equal("Bearer <testToken>"))
                 }
-                it("then creates parameters without journey") {
+                it("then creates parameters with person") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
                     verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
                     let params = fetchArgs.value!
@@ -59,22 +77,7 @@ final class JourneyApiTests: QuickSpec {
                     let parameters: Dictionary<String, Any> = body["parameters"] as! Dictionary<String, Any>
                     expect(parameters["uuid"] as? String).to(equal("somevalue"))
                     expect(parameters["timestamp"] as? Double).to(equal(0.1))
-                    expect(parameters["journey"]).to(beNil())
-                }
-            }
-            describe("when parameters include Journey") {
-                beforeEach {
-                    _ = try! JourneyApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithJourney)
-                }
-                it("then creates parameters with journey") {
-                    let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
-                    verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
-                    let params = fetchArgs.value!
-                    let body: Dictionary<String, Any> = params["body"] as! Dictionary<String, Any>
-                    let parameters: Dictionary<String, Any> = body["parameters"] as! Dictionary<String, Any>
-                    expect(parameters["uuid"] as? String).to(equal("somevalue"))
-                    expect(parameters["timestamp"] as? Double).to(equal(0.1))
-                    expect(parameters["journey"] as? Array).to(equal(journeyData))
+                    expect(parameters["person"] as? Dictionary<String, String>).to(equal(personData))
                 }
             }
         }
