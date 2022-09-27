@@ -13,7 +13,11 @@ public protocol JsonFetcherClient {
 extension URLSession: JsonFetcherClient {
 }
 
-public class JsonFetcher {
+public protocol Fetchable {
+    func fetch(data: Dictionary<String, Any>) throws -> Task<[String: Any], Error>
+}
+
+public class JsonFetcher : Fetchable {
     public enum Errors: Error {
         case clientUrlIncorrect(String)
         case clientBodyIncorrect(String)
