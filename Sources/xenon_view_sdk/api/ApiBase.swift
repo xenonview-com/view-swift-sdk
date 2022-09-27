@@ -8,7 +8,7 @@ open class ApiBase: Fetchable {
     public enum Errors: Error {
         case authenticationTokenError(String)
     }
-    private var fetcher: Fetchable
+    open var fetcher: Fetchable
     private var name: String
     private var method: String
     private var headers: Dictionary<String, String>
