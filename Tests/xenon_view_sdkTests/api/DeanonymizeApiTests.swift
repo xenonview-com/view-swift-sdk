@@ -36,13 +36,13 @@ final class DeanonymizeApiTest: QuickSpec {
                 })
             }
             it("can be default constructed") {
-                expect(DeanonymizeApi(apiUrl: apiUrl)).notTo(beNil())
+                expect(DeanonymizeApi()).notTo(beNil())
             }
             describe("when parameters do not include person") {
                 var caught: String = ""
                 beforeEach {
                     do {
-                        _ = try DeanonymizeApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithoutPerson)
+                        _ = try DeanonymizeApi(fetcher_: JsonFetcher).fetch(data: dataWithoutPerson)
                     } catch DeanonymizeApi.Errors.parameterError(let reason) {
                         caught = reason
                     } catch {
@@ -55,7 +55,7 @@ final class DeanonymizeApiTest: QuickSpec {
             }
             describe("when parameters include person") {
                 beforeEach {
-                    _ = try! DeanonymizeApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithPerson)
+                    _ = try! DeanonymizeApi(fetcher_: JsonFetcher).fetch(data: dataWithPerson)
                 }
                 it("then requests deanonymize") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()

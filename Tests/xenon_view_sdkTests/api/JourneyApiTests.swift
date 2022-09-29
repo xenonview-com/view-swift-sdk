@@ -33,11 +33,11 @@ final class JourneyApiTests: QuickSpec {
                 })
             }
             it("can be default constructed") {
-                expect(JourneyApi(apiUrl: apiUrl)).notTo(beNil())
+                expect(JourneyApi()).notTo(beNil())
             }
             describe("when parameters do not include Journey") {
                 beforeEach {
-                    _ = try! JourneyApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithoutJourney)
+                    _ = try! JourneyApi(fetcher_: JsonFetcher).fetch(data: dataWithoutJourney)
                 }
                 it("then requests Journey Api") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
@@ -64,7 +64,7 @@ final class JourneyApiTests: QuickSpec {
             }
             describe("when parameters include Journey") {
                 beforeEach {
-                    _ = try! JourneyApi(apiUrl: apiUrl, fetcher_: JsonFetcher).fetch(data: dataWithJourney)
+                    _ = try! JourneyApi(fetcher_: JsonFetcher).fetch(data: dataWithJourney)
                 }
                 it("then creates parameters with journey") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()

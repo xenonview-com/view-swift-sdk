@@ -8,16 +8,15 @@ open class DeanonymizeApi: ApiBase {
     public enum Errors: Error {
         case parameterError(String)
     }
-    public convenience init(apiUrl: String) {
+    public convenience init() {
         self.init(props:[
-            "apiUrl":apiUrl,
             "name": "ApiDeanonymize",
             "url": "deanonymize",
             "authenticated": true,
         ])
     }
-    public convenience init(apiUrl: String, fetcher_: Fetchable) {
-        self.init(apiUrl: apiUrl)
+    public convenience init(fetcher_: Fetchable) {
+        self.init()
         fetcher = fetcher_
     }
 

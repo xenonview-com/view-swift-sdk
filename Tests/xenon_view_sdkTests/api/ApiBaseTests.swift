@@ -144,16 +144,32 @@ final class ApiBaseTests: QuickSpec {
                 }
             }
             describe("when calling fetch with custom host") {
-                beforeEach {
-                    props["apiUrl"] = "https://example.com"
-                    _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: [:])
+                describe("when constructed") {
+                    beforeEach {
+                        props["apiUrl"] = "https://example.com"
+                        _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: [:])
+                    }
+                    it("requests url") {
+                        let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
+                        verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
+                        let params = fetchArgs.value!
+                        expect(params["url"] as? String).to(equal("https://example.com/"))
+                    }
                 }
-                it("requests url") {
-                    let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
-                    verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
-                    let params = fetchArgs.value!
-                    expect(params["url"] as? String).to(equal("https://example.com/"))
+                describe("when set later") {
+                    beforeEach {
+                        props["apiUrl"] = apiUrl
+                        let api = ApiBase(props: props, fetcher_: JsonFetcher).with(apiUrl: "https://example.com")
+                        _ = try! api.fetch(data: [:])
+                    }
+                    it("requests url") {
+                        let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
+                        verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
+                        let params = fetchArgs.value!
+                        expect(params["url"] as? String).to(equal("https://example.com/"))
+                    }
                 }
+
             }
             describe("when calling fetch with no name") {
                 beforeEach {

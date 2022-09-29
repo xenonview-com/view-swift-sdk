@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "asyncobjects",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyLab/AsyncObjects.git",
+      "state" : {
+        "revision" : "dd1b776ee4de59b64369d1f6ffed899ea7e81bde",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "cwlcatchexception",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattgallagher/CwlCatchException.git",
@@ -48,10 +57,18 @@
     {
       "identity" : "quick",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Quick/Quick.git",
+      "location" : "https://github.com/Quick/Quick",
       "state" : {
-        "revision" : "f9d519828bb03dfc8125467d8f7b93131951124c",
-        "version" : "5.0.1"
+        "revision" : "be947fe35f2745650ef3aecf4f54d9de5811ab9f"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "f504716c27d2e5d4144fa4794b12129301d17729",
+        "version" : "1.0.3"
       }
     }
   ],

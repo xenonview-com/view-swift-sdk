@@ -4,7 +4,11 @@
 
 import Foundation
 
-open class ApiBase: Fetchable {
+public protocol Api:Fetchable{
+    func with(apiUrl: String) -> Fetchable
+}
+
+open class ApiBase: Api {
     public enum Errors: Error {
         case authenticationTokenError(String)
     }
@@ -16,7 +20,6 @@ open class ApiBase: Fetchable {
     private var apiUrl: String
     private var skipName: Bool
     private var authenticated: Bool
-
 
     public init(props: Dictionary<String, Any>) {
         fetcher = JsonFetcher()
@@ -34,6 +37,12 @@ open class ApiBase: Fetchable {
         self.init(props: props)
         fetcher = fetcher_
     }
+
+    public func with(apiUrl: String) -> Fetchable {
+        self.apiUrl = apiUrl
+        return self
+    }
+
 
     open func params(data: Dictionary<String, Any>) throws -> Dictionary<String, Any> { data }
 
