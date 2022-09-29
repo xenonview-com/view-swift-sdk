@@ -113,7 +113,7 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when initialized and previous journey") {
                 var subject: Xenon? = nil
                 beforeEach {
-                    try! Xenon().pageView(page: "test")
+                    try! Xenon().add(pageView: "test")
                     subject = Xenon(apiKey: apiKey, apiUrl: apiUrl)
                 }
                 it("then has previous journey") {
@@ -128,7 +128,7 @@ final class xenon_view_sdkTests: QuickSpec {
             }
             describe("when adding a page view") {
                 beforeEach {
-                    try! Xenon().pageView(page: "test")
+                    try! Xenon().add(pageView: "test")
                 }
                 it("then has a journey with a page view") {
                     let journey = Xenon().journey()
@@ -144,7 +144,7 @@ final class xenon_view_sdkTests: QuickSpec {
                 let stage = "<stage in funnel>"
                 let action = "<custom action>"
                 beforeEach {
-                    try! Xenon().funnel(stage: stage, action: action)
+                    try! Xenon().add(funnelStage: stage, action: action)
                 }
                 it("then has a journey with a funnel stage") {
                     let journey = Xenon().journey()
@@ -161,7 +161,7 @@ final class xenon_view_sdkTests: QuickSpec {
                 let action = "<custom action>"
                 describe("when no action provided") {
                     beforeEach {
-                        try! Xenon().outcome(outcome: outcome, action: "")
+                        try! Xenon().add(outcome: outcome, action: "")
                     }
                     it("then adds an outcome to journey") {
                         let journey = Xenon().journey()
@@ -171,7 +171,7 @@ final class xenon_view_sdkTests: QuickSpec {
                 }
                 describe("when no platform set and action") {
                     beforeEach {
-                        try! Xenon().outcome(outcome: outcome, action: action)
+                        try! Xenon().add(outcome: outcome, action: action)
                     }
                     it("then adds an outcome to journey") {
                         let journey = Xenon().journey()
@@ -184,7 +184,7 @@ final class xenon_view_sdkTests: QuickSpec {
                     beforeEach {
                         try! Xenon().platform(softwareVersion: softwareVersion, deviceModel: deviceModel, operatingSystemVersion: operatingSystemVersion)
                         Xenon().removePlatform()
-                        try! Xenon().outcome(outcome: outcome, action: action)
+                        try! Xenon().add(outcome: outcome, action: action)
                     }
                     it("then adds an outcome to journey") {
                         let journey = Xenon().journey()
@@ -196,7 +196,7 @@ final class xenon_view_sdkTests: QuickSpec {
                 describe("when platform set") {
                     beforeEach {
                         try! Xenon().platform(softwareVersion: softwareVersion, deviceModel: deviceModel, operatingSystemVersion: operatingSystemVersion)
-                        try! Xenon().outcome(outcome: outcome, action: action)
+                        try! Xenon().add(outcome: outcome, action: action)
                     }
                     it("then adds an outcome to journey") {
                         let journey = Xenon().journey()
@@ -222,7 +222,7 @@ final class xenon_view_sdkTests: QuickSpec {
                     "action": "test"
                 ]
                 beforeEach {
-                    try! Xenon().event(event_: event)
+                    try! Xenon().add(event: event)
                 }
                 it("then has a journey with an event") {
                     let journey = Xenon().journey()
@@ -242,8 +242,8 @@ final class xenon_view_sdkTests: QuickSpec {
                 ]
                 describe("when duplicate funnels") {
                     beforeEach {
-                        try! Xenon().event(event_: event)
-                        try! Xenon().event(event_: event)
+                        try! Xenon().add(event: event)
+                        try! Xenon().add(event: event)
                     }
                     it("then has a journey with a count of 2") {
                         let journey = Xenon().journey()
@@ -256,8 +256,8 @@ final class xenon_view_sdkTests: QuickSpec {
                 }
                 describe("when duplicate categories") {
                     beforeEach {
-                        try! Xenon().event(event_: event2)
-                        try! Xenon().event(event_: event2)
+                        try! Xenon().add(event: event2)
+                        try! Xenon().add(event: event2)
                     }
                     it("then has a journey with a count of 2") {
                         let journey = Xenon().journey()
@@ -270,9 +270,9 @@ final class xenon_view_sdkTests: QuickSpec {
                 }
                 describe("when multiple duplicate categories") {
                     beforeEach {
-                        try! Xenon().event(event_: event2)
-                        try! Xenon().event(event_: event2)
-                        try! Xenon().event(event_: event2)
+                        try! Xenon().add(event: event2)
+                        try! Xenon().add(event: event2)
+                        try! Xenon().add(event: event2)
                     }
                     it("then has a journey with a count of 3") {
                         let journey = Xenon().journey()
@@ -282,12 +282,12 @@ final class xenon_view_sdkTests: QuickSpec {
                 }
                 describe("when duplicate categories but separate actions") {
                     beforeEach {
-                        try! Xenon().event(event_: event2)
+                        try! Xenon().add(event: event2)
                         let event3 = [
                             "category": "category",
                             "action": "different"
                         ]
-                        try! Xenon().event(event_: event3)
+                        try! Xenon().add(event: event3)
                     }
                     it("then has a journey with both events") {
                         let journey = Xenon().journey()
@@ -300,12 +300,12 @@ final class xenon_view_sdkTests: QuickSpec {
                 }
                 describe("when different") {
                     beforeEach {
-                        try! Xenon().event(event_: event2)
+                        try! Xenon().add(event: event2)
                         let event3 = [
                             "outcome": "different",
                             "action": "different"
                         ]
-                        try! Xenon().event(event_: event3)
+                        try! Xenon().add(event: event3)
                     }
                     it("then has a journey with both events") {
                         let journey = Xenon().journey()
@@ -321,7 +321,7 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when adding generic event") {
                 let event = ["action": "test"]
                 beforeEach {
-                    try! Xenon().event(event_: event)
+                    try! Xenon().add(event: event)
                 }
                 it("then has a journey with a generic event") {
                     let journey = Xenon().journey()
@@ -333,7 +333,7 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when adding custom event") {
                 let event = ["custom": "test"]
                 beforeEach {
-                    try! Xenon().event(event_: event)
+                    try! Xenon().add(event: event)
                 }
                 it("then has a journey with a generic event") {
                     let journey = Xenon().journey()
@@ -351,7 +351,7 @@ final class xenon_view_sdkTests: QuickSpec {
 
                 beforeEach {
                     subject = Xenon()
-                    try! subject!.event(event_: event)
+                    try! subject!.add(event: event)
                     try! subject!.reset()
                 }
                 describe("when restoring") {
@@ -371,7 +371,7 @@ final class xenon_view_sdkTests: QuickSpec {
                         "action": "another"
                     ]
                     beforeEach {
-                        try! subject!.event(event_: anotherEvent)
+                        try! subject!.add(event: anotherEvent)
                         try! subject!.restore()
                     }
 
@@ -392,7 +392,7 @@ final class xenon_view_sdkTests: QuickSpec {
                 ]
                 beforeEach {
                     subject = Xenon(apiKey: apiKey, apiUrl: apiUrl, _journeyApi: journeyApi)
-                    try! subject!.event(event_: event)
+                    try! subject!.add(event: event)
                 }
                 describe("when default api key") {
                     beforeEach {
@@ -487,7 +487,7 @@ final class xenon_view_sdkTests: QuickSpec {
                         let opSubject = subject!
                         let op = TaskOperation(queue: .global(qos: .background)) {
                             do {
-                                try await opSubject.commit().value
+                                _ = try await opSubject.commit().value
                             } catch {
                                 opResult.set(result: error as! String)
                             }
@@ -601,7 +601,7 @@ final class xenon_view_sdkTests: QuickSpec {
                         let opSubject = subject!
                         let op = TaskOperation(queue: .global(qos: .background)) {
                             do {
-                                try await opSubject.deanonymize(person: person).value
+                                _ = try await opSubject.deanonymize(person: person).value
                             } catch {
                                 opResult.set(result: error as! String)
                             }

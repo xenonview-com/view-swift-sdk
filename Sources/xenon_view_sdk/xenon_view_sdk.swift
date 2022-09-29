@@ -103,23 +103,23 @@ public class Xenon {
     }
 
 
-    public func pageView(page: String) throws {
+    public func add(pageView: String) throws {
         let content = [
             "category": "Page View",
-            "action": page
+            "action": pageView
         ]
         try journeyAdd(content: content)
     }
 
-    public func funnel(stage: String, action: String) throws {
+    public func add(funnelStage: String, action: String) throws {
         let content = [
-            "funnel": stage,
+            "funnel": funnelStage,
             "action": action
         ]
         try journeyAdd(content: content)
     }
 
-    public func outcome(outcome: String, action: String) throws {
+    public func add(outcome: String, action: String) throws {
         var content: Dictionary<String, Any> = [
             "outcome": outcome,
             "action": action
@@ -138,11 +138,11 @@ public class Xenon {
         ]
     }
 
-    public func event(event_: Dictionary<String, Any>) throws {
-        var content: Dictionary<String, Any> = event_
+    public func add(event: Dictionary<String, Any>) throws {
+        var content: Dictionary<String, Any> = event
         if (content["action"] == nil) {
             if let theJSONData = try? JSONSerialization.data(
-                    withJSONObject: event_,
+                    withJSONObject: event,
                     options: []) {
                 let theJSONText = String(data: theJSONData,
                         encoding: .ascii)

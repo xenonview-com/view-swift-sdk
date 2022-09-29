@@ -20,6 +20,11 @@ You can run the tests for the whole project in the root directory by simply runn
 swift test
 ```
 
+Or by test
+```bash
+swift test --filter"test_name"
+```
+
 The following sections show how to run testing variants during development.
 
 ### Coverage
@@ -27,6 +32,8 @@ The following sections show how to run testing variants during development.
 To run the tests in "coverage mode" (runs all tests then calculates coverage for each dir/file):
 ```bash
 ./coverage_report
+# --- OR ---
+./coverage_html
 # --- OR ---
 swift test --enable-code-coverage
 xcrun llvm-cov report   --ignore-filename-regex='(.build|Tests)[/\\].*'   -instr-profile $(swift test --show-codecov-path | xargs dirname)/default.profdata $(find .build/debug/xenon_view_sdk.build -name '*.o' -print0 | xargs -0 printf '%s ')
