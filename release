@@ -1,24 +1,28 @@
 #!/bin/bash
-set -eu
 cd "$(dirname "$0")"
 # https://github.com/unegma/bash-functions/blob/main/update.sh
+VERSION="patch"
 
-VERSION=""
+usage() { echo "Usage: $0 [-v <major|minor|patch>] [-m <tag message>]" 1>&2; exit 1; }
 
-#get parameters
-while getopts v: flag
-do
-  case "${flag}" in
+while getopts ":v:m:" o; do
+  case "${o}" in
     v) VERSION=${OPTARG};;
+    m) MESSAGE=${OPTARG};;
+    *) usage
   esac
 done
 
+if [ -z "${MESSAGE}" ]; then
+    usage
+fi
+
 #get highest tag number, and add 1.0.0 if doesn't exist
-CURRENT_VERSION=`git describe --abbrev=0 --tags 2>/dev/null`
+CURRENT_VERSION=$(git describe --abbrev=0 --tags 2>/dev/null)
 
 if [[ $CURRENT_VERSION == '' ]]
 then
-  CURRENT_VERSION='1.0.0'
+  CURRENT_VERSION='0.0.0'
 fi
 echo "Current Version: $CURRENT_VERSION"
 
@@ -56,15 +60,14 @@ NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
 
 #only tag if no tag already
 if [ -z "$NEEDS_TAG" ]; then
-  npm version $NEW_TAG
-  npm publish --access public
-  echo "Tagged with $NEW_TAG"
+  git tag -a "v$NEW_TAG" -m "$NEW_TAG - $MESSAGE"
+  echo "Tagged with $NEW_TAG - $MESSAGE"
   git push --tags
   git push
 else
   echo "Already a tag on this commit"
 fi
 
-#gh auth login
-#gh release create -d --generate-notes
+gh auth login
+gh release create "$NEW_TAG" -d --generate-notes
 
