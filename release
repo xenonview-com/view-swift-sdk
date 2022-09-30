@@ -17,7 +17,8 @@ if [ -z "${MESSAGE}" ]; then
     usage
 fi
 
-#get highest tag number, and add 1.0.0 if doesn't exist
+#get highest tag number, and add 0.0.0 if doesn't exist
+git fetch --all --tags
 CURRENT_VERSION=$(git describe --abbrev=0 --tags 2>/dev/null)
 
 if [[ $CURRENT_VERSION == '' ]]
@@ -60,12 +61,10 @@ NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
 
 #only tag if no tag already
 if [ -z "$NEEDS_TAG" ]; then
-  git tag -a "v$NEW_TAG" -m "$NEW_TAG - $MESSAGE"
   echo "Tagged with $NEW_TAG - $MESSAGE"
-  git push --tags
-  git push
 else
   echo "Already a tag on this commit"
+  exit 1
 fi
 
 gh auth login
