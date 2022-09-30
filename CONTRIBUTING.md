@@ -3,6 +3,7 @@
 ## Dependencies
 
 * swift (provided by xcode application)
+* [gh](https://github.com/cli/cli#installation) 
 
 ## Installing library dependencies
 
