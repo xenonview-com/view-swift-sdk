@@ -72,6 +72,27 @@ import xenon_view_sdk
 // start by initializing Xenon View
 Xenon().initialize(apiKey:"<API KEY>")
 ```
+
+Typically, this would be done during app initialization:
+```swift 
+import xenon_view_sdk
+
+@main
+struct ExampleApp: App {
+    // register initial Xenon parameters every launch
+    init() {
+        // start by initializing Xenon View
+        Xenon().initialize(apiKey:"<API KEY>")
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
+
 Of course, you'll have to make the following modifications to the above code:
 - Replace `<API KEY>` with your [api key](https://xenonview.com/api-get)
 
@@ -95,14 +116,25 @@ This adds platform details for each [outcome](#outcome). Typically, this would b
 ```swift
 import xenon_view_sdk
 
-let xenon = Xenon()
-xenon.initialize(apiKey:"<API KEY>")
+@main
+struct ExampleApp: App {
+    // register initial Xenon parameters every launch
+    init() {
+        // start by initializing Xenon View
+        Xenon().initialize(apiKey:"<API KEY>")
+        let softwareVersion = "5.1.5"
+        let deviceModel = "iPhone 11 Pro"
+        let operatingSystemVersion = "16.0.2"
 
-let softwareVersion = "5.1.5"
-let deviceModel = "iPhone 11 Pro"
-let operatingSystemVersion = "16.0.2"
-
-try! xenon.platform(softwareVersion: softwareVersion, deviceModel: deviceModel, operatingSystemVersion: operatingSystemVersion)
+        try! xenon.platform(softwareVersion: softwareVersion, deviceModel: deviceModel, operatingSystemVersion: operatingSystemVersion)
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
 ```
 
 ### Add Journeys
