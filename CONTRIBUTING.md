@@ -44,12 +44,10 @@ xcrun llvm-cov report   --ignore-filename-regex='(.build|Tests)[/\\].*'   -instr
 
 _We (package maintainers) handle this step so this is more of internal notes:_
 
-To publish the package make a new git tag with the semantic version:
+To publish the package:
 ```bash
-git tag -a v0.0.0 -m "0.0.0 <change summary>"
+./release
 ```
-Additionally create a GitHub release from the tag.
-
 
 # Contributing
 
