@@ -37,7 +37,7 @@ Then including as a dependency in your app in the targets section:
             dependencies: ["xenon_view_sdk"]),
 ```
 
-### Via xcode (per version 14)
+### Via Xcode (per version 14)
 
 1) Right-click on your top-level project and select ```Add Packages...```:
 
