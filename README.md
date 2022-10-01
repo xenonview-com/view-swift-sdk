@@ -35,6 +35,16 @@ Then including as a dependency in your app in the targets section:
             dependencies: ["xenon_view_sdk"]),
 ```
 
+Via xcode (per version 14):
+1) Right-click on your top-level project and select ```Add Packages...```:
+![Image](./documentation/right_click_to_add.png)
+2) Paste into the search bar ```https://github.com/xenonview-com/view-swift-sdk``` and click ```Add Package```:
+![Image](./documentation/paste_url.png)
+3) Select ```xenon_view_sdk``` and click ```Add Package```:
+![Image](./documentation/select_xenon_view.png)
+4) Ensure Xenon SDK in installed by viewing ```Package Dependencies```:
+![Image](./documentation/installed_success.png)
+
 ## <a name="how-to-use"></a>
 ## How to use
 
