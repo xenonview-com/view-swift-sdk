@@ -54,7 +54,7 @@ Then including as a dependency in your app in the targets section:
 ![Image](./documentation/select_xenon_view.png)
 
 
-4) Ensure Xenon SDK in installed by viewing ```Package Dependencies```:
+4) Ensure Xenon SDK is installed by viewing ```Package Dependencies```:
 
 ![Image](./documentation/installed_success.png)
 
