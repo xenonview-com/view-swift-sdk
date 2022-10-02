@@ -11,6 +11,7 @@ The Xenon View Swift SDK is the Swift SDK to interact with [XenonView](https://x
 ## <a name="whats-new"></a>
 ## What's New
 * v0.0.1 - Basic Functionality
+* v0.0.2 - Fixed headers bug
 
 ## <a name="installation"></a>
 ## Installation
@@ -24,7 +25,7 @@ Add to your dependencies section:
 dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url:"https://github.com/xenonview-com/view-swift-sdk", from: "0.0.1"),
+        .package(url:"https://github.com/xenonview-com/view-swift-sdk", from: "0.0.2"),
         ...
 ```
 Then including as a dependency in your app in the targets section:
