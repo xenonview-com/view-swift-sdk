@@ -377,34 +377,6 @@ final class JsonFetcherTests: QuickSpec {
                     expect(caught.get()).to(contain("CustomError"))
                 }
             }
-            describe("when authorized fetch"){
-                beforeEach {
-                    data["method"] = "GET"
-                    data["accessToken"] = token
-                    let opClient = client
-                    let opData = data
-                    let op = TaskOperation(queue: .global(qos: .background)) {
-                        given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
-                        let _ = try? await JsonFetcher(client_: opClient).fetch(data: opData).value
-                    }
-                    op.start()
-                    op.waitUntilFinished()
-                }
-                it("then requests base Url with Authorization header") {
-                    let opURLRequest = OpURLRequest()
-                    let opClient = client
-                    let op = TaskOperation(queue: .global(qos: .background)) {
-                        let request = ArgumentCaptor<URLRequest>()
-                        verify(try await opClient.data(for: request.any(), delegate: nil)).wasCalled()
-                        opURLRequest.set(result: request.value!)
-                    }
-                    op.start()
-                    op.waitUntilFinished()
-                    let requested: URLRequest = opURLRequest.get()
-                    expect(requested.value(forHTTPHeaderField: "accept")).to(equal("application/json"))
-                    expect(requested.value(forHTTPHeaderField: "authorization")).to(equal("Bearer " + token))
-                }
-            }
         }
         describe("when posting fetch"){
             beforeEach {

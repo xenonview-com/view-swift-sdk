@@ -75,7 +75,7 @@ open class ApiBase: Api {
             requestHeaders["authorization"] = "Bearer " + token
         }
 
-        fetchParameters["requestHeaders"] =  requestHeaders;
+        fetchParameters["headers"] =  requestHeaders;
         return try fetcher.fetch(data: fetchParameters)
     }
 }

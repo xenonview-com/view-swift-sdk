@@ -36,7 +36,7 @@ final class ApiBaseTests: QuickSpec {
                     let body: Dictionary<String, Any> = params["body"] as! Dictionary<String, Any>
                     expect(body["name"] as? String).to(equal("ApiBase"))
                     expect((body["parameters"] as! Dictionary<String, String>)).to(equal([:]))
-                    let headers: Dictionary<String, String> = params["requestHeaders"] as! Dictionary<String, String>
+                    let headers: Dictionary<String, String> = params["headers"] as! Dictionary<String, String>
                     expect(headers["content-type"]).to(equal("application/json"))
                 }
             }
@@ -73,7 +73,7 @@ final class ApiBaseTests: QuickSpec {
                     expect(params["url"] as? String).to(equal(apiUrl + "/url"))
                     let body: Dictionary<String, Any> = params["body"] as! Dictionary<String, Any>
                     expect(body["name"] as? String).to(equal("name"))
-                    let headers: Dictionary<String, String> = params["requestHeaders"] as! Dictionary<String, String>
+                    let headers: Dictionary<String, String> = params["headers"] as! Dictionary<String, String>
                     expect(headers["content-type"]).to(equal("application/json"))
                     expect(headers["header"]).to(equal("header"))
                 }
@@ -90,7 +90,7 @@ final class ApiBaseTests: QuickSpec {
                         let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
                         verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
                         let params = fetchArgs.value!
-                        let headers: Dictionary<String, String> = params["requestHeaders"] as! Dictionary<String, String>
+                        let headers: Dictionary<String, String> = params["headers"] as! Dictionary<String, String>
                         expect(headers["content-type"]).to(equal("application/json"))
                         expect(headers["authorization"]).to(equal("Bearer <anAccessToken>"))
                     }
@@ -139,7 +139,7 @@ final class ApiBaseTests: QuickSpec {
                     verify(try JsonFetcher.fetch(data: fetchArgs.any())).wasCalled()
                     let params = fetchArgs.value!
                     expect(params["method"] as? String).to(equal("GET"))
-                    let headers: Dictionary<String, String> = params["requestHeaders"] as! Dictionary<String, String>
+                    let headers: Dictionary<String, String> = params["headers"] as! Dictionary<String, String>
                     expect(headers["content-type"]).to(beNil())
                 }
             }

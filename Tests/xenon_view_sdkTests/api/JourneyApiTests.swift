@@ -47,7 +47,7 @@ final class JourneyApiTests: QuickSpec {
                     expect(params["url"] as? String).to(equal(apiUrl + "/journey"))
                     let body: Dictionary<String, Any> = params["body"] as! Dictionary<String, Any>
                     expect(body["name"] as? String).to(equal("ApiJourney"))
-                    let headers: Dictionary<String, String> = params["requestHeaders"] as! Dictionary<String, String>
+                    let headers: Dictionary<String, String> = params["headers"] as! Dictionary<String, String>
                     expect(headers["content-type"]).to(equal("application/json"))
                     expect(headers["authorization"]).to(equal("Bearer <testToken>"))
                 }

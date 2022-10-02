@@ -48,9 +48,6 @@ public class JsonFetcher : Fetchable {
         }
         var mutatableRequest = URLRequest(url: url)
         mutatableRequest.setValue("application/json", forHTTPHeaderField: "accept")
-        if (data["accessToken"] != nil) {
-            mutatableRequest.setValue("Bearer \(data["accessToken"] as! String)", forHTTPHeaderField: "authorization")
-        }
         if (data["headers"] != nil){
             let headers: Dictionary<String, String> = data["headers"] as! Dictionary<String, String>
             for (header, value) in headers {
