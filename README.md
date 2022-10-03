@@ -26,7 +26,7 @@ Add to your dependencies section:
 dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url:"https://github.com/xenonview-com/view-swift-sdk", from: "0.0.2"),
+        .package(url:"https://github.com/xenonview-com/view-swift-sdk", from: "0.0.3"),
         ...
 ```
 Then including as a dependency in your app in the targets section:
