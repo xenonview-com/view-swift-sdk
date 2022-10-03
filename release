@@ -6,9 +6,8 @@ VERSION="patch"
 usage() { echo "Usage: $0 [-v <major|minor|patch>] [-m <tag message>]" 1>&2; exit 1; }
 
 ./prerelease
-if [ `git diff --cached --exit-code HEAD^ > /dev/null` ];
+if [ !`git pull -r` ];
 then
-        echo "PLEASE COMMIT YOUR CHANGE FIRST!!!"
     exit 1
 fi
 
@@ -26,7 +25,6 @@ fi
 
 #get highest tag number, and add 0.0.0 if doesn't exist
 git fetch --all --tags
-git pull -r
 git push
 CURRENT_VERSION=$(git describe --abbrev=0 --tags 2>/dev/null)
 
