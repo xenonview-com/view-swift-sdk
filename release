@@ -5,6 +5,13 @@ VERSION="patch"
 
 usage() { echo "Usage: $0 [-v <major|minor|patch>] [-m <tag message>]" 1>&2; exit 1; }
 
+./prerelease
+if [ `git diff --cached --exit-code HEAD^ > /dev/null` ];
+then
+        echo "PLEASE COMMIT YOUR CHANGE FIRST!!!"
+    exit 1
+fi
+
 while getopts ":v:m:" o; do
   case "${o}" in
     v) VERSION=${OPTARG};;

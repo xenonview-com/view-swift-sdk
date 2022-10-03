@@ -107,7 +107,7 @@ After you have initialized View, you can optionally specify platform details suc
 ```swift
 import xenon_view_sdk
 
-let softwareVersion = "5.1.5"
+let softwareVersion = "x.y.z" // use your app version
 let deviceModel = "iPhone 11 Pro"
 let operatingSystemVersion = "16.0.2"
 
@@ -116,6 +116,7 @@ try! Xenon().platform(softwareVersion: softwareVersion, deviceModel: deviceModel
 ```
 This adds platform details for each [outcome](#outcome). Typically, this would be set once at initialization:
 ```swift
+import DeviceKit
 import xenon_view_sdk
 
 @main
@@ -124,9 +125,10 @@ struct ExampleApp: App {
     init() {
         // start by initializing Xenon View
         Xenon().initialize(apiKey:"<API KEY>")
+        let os = ProcessInfo().operatingSystemVersion
         let softwareVersion = "5.1.5"
-        let deviceModel = "iPhone 11 Pro"
-        let operatingSystemVersion = "16.0.2"
+        let deviceModel = "\(Device.current)"
+        let operatingSystemVersion = "\(os.majorVersion).\(os.minorVersion).\(os.patchVersion)"
 
         try! xenon.platform(softwareVersion: softwareVersion, deviceModel: deviceModel, operatingSystemVersion: operatingSystemVersion)
     }
