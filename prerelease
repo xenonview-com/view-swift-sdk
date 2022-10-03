@@ -1,0 +1,5 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+rm Package.swift
+cp ./Package.release.swift ./Package.swift
+

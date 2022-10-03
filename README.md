@@ -12,6 +12,7 @@ The Xenon View Swift SDK is the Swift SDK to interact with [XenonView](https://x
 ## What's New
 * v0.0.1 - Basic Functionality
 * v0.0.2 - Fixed headers bug
+* v0.0.3 - remove test dependencies from release
 
 ## <a name="installation"></a>
 ## Installation
@@ -99,8 +100,8 @@ Of course, you'll have to make the following modifications to the above code:
 
 ### Platforming
 After you have initialized View, you can optionally specify platform details such as:
-- Operating System version (iOS)
-- Device model (iPhone, iPad, etc.)
+- Operating System version (iOS) See [OperatingSystemVersion](https://developer.apple.com/documentation/foundation/operatingsystemversion)
+- Device model (iPhone, iPad, etc.) See [DeviceKit](https://github.com/devicekit/DeviceKit)
 - Software version of your application.
 
 ```swift

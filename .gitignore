@@ -13,3 +13,4 @@ DerivedData/
 lib_InternalSwiftSyntaxParser.dylib
 .mockingbird/
 project.json
+Package.resolved
