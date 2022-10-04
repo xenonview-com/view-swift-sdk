@@ -4,7 +4,7 @@
 
 import Foundation
 
-open class DeanonymizeApi: ApiBase {
+open class DeanonymizeApi: ApiBase<[String:Any]> {
     public enum Errors: Error {
         case parameterError(String)
     }

@@ -4,14 +4,14 @@
 
 import Foundation
 
-public protocol Api:Fetchable{
+public protocol Api : Fetchable{
     func with(apiUrl: String) -> Fetchable
 }
 
-open class ApiBase: Api {
-    public enum Errors: Error {
-        case authenticationTokenError(String)
-    }
+public enum ApiBaseErrors: Error {
+    case authenticationTokenError(String)
+}
+open class ApiBase<T>: Api {
     open var fetcher: Fetchable
     private var name: String
     private var method: String
@@ -22,7 +22,7 @@ open class ApiBase: Api {
     private var authenticated: Bool
 
     public init(props: Dictionary<String, Any>) {
-        fetcher = JsonFetcher()
+        fetcher = JsonFetcher<T>()
         name = props["name"] != nil ? props["name"] as! String : "ApiBase"
         method = props["method"] != nil ? props["method"] as! String : "POST"
         let defaultHeaders = ["content-type": "application/json"]
@@ -33,7 +33,7 @@ open class ApiBase: Api {
         authenticated = props["authenticated"] != nil && props["authenticated"] as! Bool
     }
 
-    public convenience init(props: Dictionary<String, Any>, fetcher_: Fetchable) {
+    public convenience init(props: Dictionary<String, Any>, fetcher_: any Fetchable) {
         self.init(props: props)
         fetcher = fetcher_
     }
@@ -48,7 +48,7 @@ open class ApiBase: Api {
 
     open func path(data: Dictionary<String, Any>) -> String { path_ }
 
-    open func fetch(data: Dictionary<String, Any>) throws -> Task<[String: Any], Error> {
+    open func fetch(data: Dictionary<String, Any>) throws -> Task<Any, Error> {
         let fetchUrl: String  = apiUrl + "/" + path(data: data);
         var fetchParameters: Dictionary<String, Any> = [
             "url": fetchUrl,
@@ -68,7 +68,7 @@ open class ApiBase: Api {
         var requestHeaders: Dictionary<String, Any> = headers
 
         if (authenticated) {
-            let error = Errors.authenticationTokenError("No token and authenticated!")
+            let error = ApiBaseErrors.authenticationTokenError("No token and authenticated!")
             if (data["token"] == nil) {throw error}
             let token: String = data["token"] as! String
             if (token == "") {throw error}

@@ -213,7 +213,7 @@ public class Xenon {
         restoreJourney = []
     }
 
-    public func commit() throws -> Task<[String: Any], Error> {
+    public func commit() throws -> Task<Any, Error> {
         let params: Dictionary<String, Any> = [
             "id": id(),
             "journey": journey(),
@@ -228,7 +228,7 @@ public class Xenon {
         return Task {
             var result: Dictionary<String,Any> = [:]
             do {
-                result = try await journeyApi.with(apiUrl: Xenon.apiUrl).fetch(data: params).value
+                result = try await journeyApi.with(apiUrl: Xenon.apiUrl).fetch(data: params).value as! [String:Any]
             } catch {
                 try restore()
                 throw error
@@ -236,7 +236,7 @@ public class Xenon {
             return result
         }
     }
-    public func deanonymize(person:Dictionary<String,Any>) throws -> Task<[String: Any], Error> {
+    public func deanonymize(person:Dictionary<String,Any>) throws -> Task<Any, Error> {
         let params: Dictionary<String, Any> = [
             "id": id(),
             "person": person,
