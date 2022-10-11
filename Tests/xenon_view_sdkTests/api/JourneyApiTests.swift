@@ -6,7 +6,7 @@ import Foundation
 import Quick
 import Nimble
 import Mockingbird
-import xenon_view_sdk
+@testable import xenon_view_sdk
 
 
 final class JourneyApiTests: QuickSpec {

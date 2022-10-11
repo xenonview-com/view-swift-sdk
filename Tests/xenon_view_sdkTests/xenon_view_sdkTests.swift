@@ -9,7 +9,7 @@ import Mockingbird
 import AsyncObjects
 import Dispatch
 @testable import class xenon_view_sdk.Xenon
-import xenon_view_sdk
+@testable import xenon_view_sdk
 
 final class xenon_view_sdkTests: QuickSpec {
     override func spec() {

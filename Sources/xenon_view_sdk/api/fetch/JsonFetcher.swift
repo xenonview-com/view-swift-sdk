@@ -4,6 +4,7 @@
 
 import Foundation
 import ExceptionCatcher
+import SwiftyJSON
 
 
 public protocol JsonFetcherClient {
@@ -14,13 +15,13 @@ extension URLSession: JsonFetcherClient {
 }
 
 public protocol Fetchable {
-    func fetch(data: Dictionary<String, Any>) throws -> Task<Any, Error>
+    func fetch(data: Dictionary<String, Any>) throws -> Task<JSON, Error>
 }
 
 public enum JsonFetcherErrors: Error {
     case clientUrlIncorrect(String)
     case clientBodyIncorrect(String)
-    case serverRejectedError(description: String, response: HTTPURLResponse, details: Dictionary<String, String>)
+    case serverRejectedError(description: String, response: HTTPURLResponse, details: JSON)
     case serverResponseError(description: String, response: HTTPURLResponse)
     case serverUnexpectedError
     case serverError(String)
@@ -30,7 +31,7 @@ public enum JsonFetcherErrors: Error {
 }
 
 
-public class JsonFetcher<T> : Fetchable {
+public class JsonFetcher : Fetchable {
 
     private var client: JsonFetcherClient
 
@@ -44,7 +45,7 @@ public class JsonFetcher<T> : Fetchable {
 
 
 
-    public func fetch(data: Dictionary<String, Any>) throws -> Task<Any, Error> {
+    public func fetch(data: Dictionary<String, Any>) throws -> Task<JSON, Error> {
         let urlString: String = data["url"] as! String
         guard let url = URL(string: urlString) else {
             throw JsonFetcherErrors.clientUrlIncorrect("\(urlString)")
@@ -105,17 +106,10 @@ public class JsonFetcher<T> : Fetchable {
             case 200:
                 break
             case 204, 304:
-                switch (T.self){
-                case is Dictionary<String, Any>.Type:
-                    return [:] as! T
-                case is Array<Any>.Type:
-                    return [] as! T
-                default:
-                    throw JsonFetcherErrors.noDefault("\(type(of: T.self)) not yet supported")
-                }
+                return JSON([:])
             case 400..<500:
-                let decoded = try JSONSerialization.jsonObject(with: data, options: [])
-                guard let details = decoded as? [String: String] else {
+                let decoded = try JSON(data: data)
+                guard let description = decoded["error_message"].string else {
                     throw JsonFetcherErrors.serverResponseError(
                             description:
                             HTTPURLResponse.localizedString(
@@ -123,11 +117,10 @@ public class JsonFetcher<T> : Fetchable {
                             ),
                             response: httpResponse)
                 }
-                let description: String = details["error_message"]!
                 throw JsonFetcherErrors.serverRejectedError(
                         description: description,
                         response: httpResponse,
-                        details: details)
+                        details: decoded)
 
             default:
                 throw JsonFetcherErrors.serverResponseError(
@@ -137,16 +130,15 @@ public class JsonFetcher<T> : Fetchable {
                         ),
                         response: httpResponse)
             }
+            var json = JSON("")
             do {
-                let decoded = try JSONSerialization.jsonObject(with: data, options: [])
-                if let dictFromJSON = decoded as? T {
-                    return dictFromJSON
-                }
+                 json = try JSON(data: data)
             } catch {
+                throw JsonFetcherErrors.serverInvalidJson(
+                        description: "Server returned non-JSON response.",
+                        response: httpResponse)
             }
-            throw JsonFetcherErrors.serverInvalidJson(
-                    description: "Server returned non-JSON response.",
-                    response: httpResponse)
+            return json
         }
     }
 }

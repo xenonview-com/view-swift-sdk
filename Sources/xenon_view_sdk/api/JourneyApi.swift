@@ -4,7 +4,7 @@
 
 import Foundation
 
-open class JourneyApi: ApiBase<[String:Any]> {
+open class JourneyApi: ApiBase {
     public convenience init() {
         self.init(props:[
             "name": "ApiJourney",

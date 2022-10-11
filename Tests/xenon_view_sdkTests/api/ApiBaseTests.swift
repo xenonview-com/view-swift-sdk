@@ -6,7 +6,7 @@ import Foundation
 import Quick
 import Nimble
 import Mockingbird
-import xenon_view_sdk
+@testable import xenon_view_sdk
 
 
 final class ApiBaseTests: QuickSpec {
@@ -25,7 +25,7 @@ final class ApiBaseTests: QuickSpec {
             describe("when calling fetch with default api") {
                 beforeEach {
                     props["apiUrl"] = apiUrl
-                    _ = try! ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: [:])
+                    _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: [:])
                 }
                 it("requests base url") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
@@ -43,7 +43,7 @@ final class ApiBaseTests: QuickSpec {
             describe("when calling fetch with default api and ignoring self signed certs") {
                 beforeEach {
                     props["apiUrl"] = apiUrl
-                    _ = try! ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: ["ignore-certificate-errors": true])
+                    _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: ["ignore-certificate-errors": true])
                 }
                 it("requests base url and ignores self signed certs") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
@@ -63,7 +63,7 @@ final class ApiBaseTests: QuickSpec {
                         "content-type": "application/json"
                     ]
                     props["headers"] = headers
-                    _ = try! ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: [:])
+                    _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: [:])
                 }
                 it("requests custom url") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
@@ -84,7 +84,7 @@ final class ApiBaseTests: QuickSpec {
                 }
                 describe("when token") {
                     beforeEach {
-                        _ = try! ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: ["token": "<anAccessToken>"])
+                        _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: ["token": "<anAccessToken>"])
                     }
                     it("requests url") {
                         let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
@@ -99,7 +99,7 @@ final class ApiBaseTests: QuickSpec {
                     var caught: String = ""
                     beforeEach {
                         do {
-                            _ = try ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: [:])
+                            _ = try ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: [:])
                         } catch ApiBaseErrors.authenticationTokenError(let reason) {
                             caught = reason
                         } catch {
@@ -114,7 +114,7 @@ final class ApiBaseTests: QuickSpec {
                     var caught: String = ""
                     beforeEach {
                         do {
-                            _ = try ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: ["token":""])
+                            _ = try ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: ["token":""])
                         } catch ApiBaseErrors.authenticationTokenError(let reason) {
                             caught = reason
                         } catch {
@@ -132,7 +132,7 @@ final class ApiBaseTests: QuickSpec {
                     props["method"] = "GET"
                     let headers = [:]
                     props["headers"] = headers
-                    _ = try! ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: ["token": "<anAccessToken>"])
+                    _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: ["token": "<anAccessToken>"])
                 }
                 it("requests url") {
                     let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
@@ -147,7 +147,7 @@ final class ApiBaseTests: QuickSpec {
                 describe("when constructed") {
                     beforeEach {
                         props["apiUrl"] = "https://example.com"
-                        _ = try! ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).fetch(data: [:])
+                        _ = try! ApiBase(props: props, fetcher_: JsonFetcher).fetch(data: [:])
                     }
                     it("requests url") {
                         let fetchArgs = ArgumentCaptor<Dictionary<String, Any>>()
@@ -159,7 +159,7 @@ final class ApiBaseTests: QuickSpec {
                 describe("when set later") {
                     beforeEach {
                         props["apiUrl"] = apiUrl
-                        let api = ApiBase<[String:Any]>(props: props, fetcher_: JsonFetcher).with(apiUrl: "https://example.com")
+                        let api = ApiBase(props: props, fetcher_: JsonFetcher).with(apiUrl: "https://example.com")
                         _ = try! api.fetch(data: [:])
                     }
                     it("requests url") {
@@ -173,7 +173,7 @@ final class ApiBaseTests: QuickSpec {
             }
             describe("when calling fetch with no name") {
                 beforeEach {
-                    class TestApi : ApiBase<[String:Any]> {
+                    class TestApi : ApiBase {
                         convenience init(fetcher_: Fetchable) {
                             self.init(props:["skipName": true], fetcher_: fetcher_)
                         }
@@ -196,7 +196,7 @@ final class ApiBaseTests: QuickSpec {
             describe("when calling fetch and params throws error") {
                 var caught: String = ""
                 beforeEach {
-                    class TestApi : ApiBase<[String:Any]> {
+                    class TestApi : ApiBase {
                         convenience init(fetcher_: Fetchable) {
                             self.init(props:[:], fetcher_: fetcher_)
                         }

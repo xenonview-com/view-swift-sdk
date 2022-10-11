@@ -8,7 +8,8 @@ import Nimble
 import Mockingbird
 import AsyncObjects
 import Dispatch
-import xenon_view_sdk
+import SwiftyJSON
+@testable import xenon_view_sdk
 
 extension String: Error {
 }
@@ -18,7 +19,7 @@ final class JsonFetcherTests: QuickSpec {
         var client = mock(JsonFetcherClient.self)
         var data: Dictionary<String, Any> = [:]
         let body: Dictionary<String, String> = ["test": "Body"]
-        let expected: Dictionary<String, String> = ["result": "success"]
+        let expected: Dictionary<String, JSON> = ["result": JSON("success")]
         class OpResult {
             static var opResult_ = ""
 
@@ -42,25 +43,13 @@ final class JsonFetcherTests: QuickSpec {
             }
         }
         class OpReturned {
-            static var opResult_: Dictionary<String, Any>?
-
-            func set(result: Dictionary<String, Any>) {
+            static var opResult_: JSON?
+            func set(result: JSON) {
                 OpReturned.opResult_ = result
             }
 
-            func get() -> Dictionary<String, Any> {
+            func get() -> JSON {
                 OpReturned.opResult_!
-            }
-        }
-        class OpReturnedArray {
-            static var opResult_: Array<Any>?
-
-            func set(result: Array<Any>) {
-                OpReturnedArray.opResult_ = result
-            }
-
-            func get() -> Array<Any> {
-                OpReturnedArray.opResult_!
             }
         }
         let caught = OpResult()
@@ -73,7 +62,7 @@ final class JsonFetcherTests: QuickSpec {
             caught.set(result: "")
         }
         it("can be constructed") {
-            expect(JsonFetcher<[String:Any]>()).notTo(beNil())
+            expect(JsonFetcher()).notTo(beNil())
         }
         describe("when no url") {
             beforeEach {
@@ -83,7 +72,7 @@ final class JsonFetcherTests: QuickSpec {
                 let opData = data
                 let op = TaskOperation(queue: .global(qos: .background)) {
                     do {
-                        let _ = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                        let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                     } catch JsonFetcherErrors.clientUrlIncorrect(let reason) {
                         caught.set(result: reason)
                     }
@@ -109,7 +98,7 @@ final class JsonFetcherTests: QuickSpec {
                     let op = TaskOperation(queue: .global(qos: .background)) {
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
                         do {
-                            let _ = try await JsonFetcher<[String:Any] >(client_: opClient).fetch(data: opData).value
+                            let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverUnexpectedError {
                             caught.set(result: "serverUnexpectedError")
                         }
@@ -146,7 +135,7 @@ final class JsonFetcherTests: QuickSpec {
                     let op = TaskOperation(queue: .global(qos: .background)) {
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
                         do {
-                            let _ = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                            let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverUnexpectedError {
                             caught.set(result: "serverUnexpectedError")
                         }
@@ -175,7 +164,7 @@ final class JsonFetcherTests: QuickSpec {
             describe("when the request is successful") {
                 let returned = OpReturned()
                 beforeEach {
-                    returned.set(result: [:])
+                    returned.set(result: JSON([:]))
                     let opClient = client
                     let opData = data
                     let op = TaskOperation(queue: .global(qos: .background)) {
@@ -186,13 +175,13 @@ final class JsonFetcherTests: QuickSpec {
                         let url: URL = URL(string: urlString)!
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((responseData, response))
-                        returned.set(result: try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value as! [String:Any])
+                        returned.set(result: try await JsonFetcher(client_: opClient).fetch(data: opData).value)
                     }
                     op.start()
                     op.waitUntilFinished()
                 }
                 it("then resolves the task with Json response") {
-                    expect((returned.get() as! Dictionary<String, String>)).to(equal(expected))
+                    expect((returned.get().dictionaryValue)).to(equal(expected))
                 }
             }
             describe("when the request is successful with bad JSON") {
@@ -207,7 +196,7 @@ final class JsonFetcherTests: QuickSpec {
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((responseData, response))
                         do {
-                            let _  = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                            let _  = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverInvalidJson(let description, _) {
                             caught.set(result: description)
                         }
@@ -233,7 +222,7 @@ final class JsonFetcherTests: QuickSpec {
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 400, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((responseData, response))
                         do {
-                            let _ = try await JsonFetcher<[String:Any] >(client_: opClient).fetch(data: opData).value
+                            let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverRejectedError(let description, _, _) {
                             caught.set(result: description)
                         }
@@ -248,7 +237,7 @@ final class JsonFetcherTests: QuickSpec {
             describe("when the request has no data") {
                 let returned = OpReturned()
                 beforeEach {
-                    returned.set(result: [:])
+                    returned.set(result: JSON([:]))
                     let opClient = client
                     let opData = data
                     let op = TaskOperation(queue: .global(qos: .background)) {
@@ -258,19 +247,19 @@ final class JsonFetcherTests: QuickSpec {
                         let url: URL = URL(string: urlString)!
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 204, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), response))
-                        returned.set(result: try! await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value as! [String:Any] )
+                        returned.set(result: try! await JsonFetcher(client_: opClient).fetch(data: opData).value )
                     }
                     op.start()
                     op.waitUntilFinished()
                 }
                 it("then resolves the task with response") {
-                    expect((returned.get() as! Dictionary<String, String>)).to(equal([:]))
+                    expect(returned.get().dictionaryValue).to(equal([:]))
                 }
             }
             describe("when the request has no data and json array expected") {
-                let returned = OpReturnedArray()
+                let returned = OpReturned()
                 beforeEach {
-                    returned.set(result: [])
+                    returned.set(result: JSON([]))
                     let opClient = client
                     let opData = data
                     let op = TaskOperation(queue: .global(qos: .background)) {
@@ -280,38 +269,13 @@ final class JsonFetcherTests: QuickSpec {
                         let url: URL = URL(string: urlString)!
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 204, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), response))
-                        returned.set(result: try! await JsonFetcher<[Any] >(client_: opClient).fetch(data: opData).value as! [Any])
+                        returned.set(result: try! await JsonFetcher(client_: opClient).fetch(data: opData).value)
                     }
                     op.start()
                     op.waitUntilFinished()
                 }
                 it("then resolves the task with response") {
-                    expect((returned.get() as! Array<String>)).to(equal([]))
-                }
-            }
-            describe("when the request has no data and unsupported type requested") {
-                beforeEach {
-                    caught.set(result: "")
-                    let opClient = client
-                    let opData = data
-                    let op = TaskOperation(queue: .global(qos: .background)) {
-                        let encoder = JSONEncoder()
-                        encoder.outputFormatting = .prettyPrinted
-                        let urlString: String = opData["url"] as! String
-                        let url: URL = URL(string: urlString)!
-                        let response: URLResponse = HTTPURLResponse(url: url, statusCode: 204, httpVersion: "1.1", headerFields: [:])!
-                        given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), response))
-                        do {
-                            let _ = try await JsonFetcher<Int>(client_: opClient).fetch(data: opData).value
-                        } catch JsonFetcherErrors.noDefault(let description) {
-                            caught.set(result: description)
-                        }
-                    }
-                    op.start()
-                    op.waitUntilFinished()
-                }
-                it("then throws") {
-                    expect(caught.get()).to(equal("Int.Type not yet supported"))
+                    expect(returned.get().arrayValue).to(equal([]))
                 }
             }
             describe("when the request generally errors") {
@@ -325,7 +289,7 @@ final class JsonFetcherTests: QuickSpec {
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 503, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), response))
                         do {
-                            let _  = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                            let _  = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverResponseError(let description, _) {
                             caught.set(result: description)
                         }
@@ -351,7 +315,7 @@ final class JsonFetcherTests: QuickSpec {
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 401, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((responseData, response))
                         do {
-                            let _ = try await JsonFetcher<[String:Any] >(client_: opClient).fetch(data: opData).value
+                            let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverRejectedError(let description, _, _) {
                             caught.set(result: description)
                         }
@@ -377,7 +341,7 @@ final class JsonFetcherTests: QuickSpec {
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 401, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: nil)).willReturn((responseData, response))
                         do {
-                            let _ = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                            let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverResponseError(let description, _) {
                             caught.set(result: description)
                         }
@@ -399,7 +363,7 @@ final class JsonFetcherTests: QuickSpec {
                             throw "network down"
                         }
                         do {
-                            let _  = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                            let _  = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.noNetworkError(let description) {
                             caught.set(result: description)
                         }
@@ -422,7 +386,7 @@ final class JsonFetcherTests: QuickSpec {
                             throw NSError(domain: "", code: -1004, userInfo: [NSLocalizedDescriptionKey: "CustomError"]) as Error
                         }
                         do {
-                            let _ = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                            let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.serverError(let description) {
                             caught.set(result: description)
                         }
@@ -446,7 +410,7 @@ final class JsonFetcherTests: QuickSpec {
                    let opData = data
                    let op = TaskOperation(queue: .global(qos: .background)) {
                        given(try await opClient.data(for: any(), delegate: nil)).willReturn((Data(), URLResponse()))
-                       let _ = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                       let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                    }
                    op.start()
                    op.waitUntilFinished()
@@ -477,7 +441,7 @@ final class JsonFetcherTests: QuickSpec {
                     let opData = data
                     let op = TaskOperation(queue: .global(qos: .background)) {
                         do {
-                            let _ = try await JsonFetcher<[String:Any]>(client_: opClient).fetch(data: opData).value
+                            let _ = try await JsonFetcher(client_: opClient).fetch(data: opData).value
                         } catch JsonFetcherErrors.clientBodyIncorrect(let reason) {
                             caught.set(result: reason)
                         }
@@ -492,7 +456,7 @@ final class JsonFetcherTests: QuickSpec {
             describe("when self signed allowed fetch"){
                 let returned = OpReturned()
                 beforeEach {
-                    returned.set(result: [:])
+                    returned.set(result: JSON([:]))
                     data["ignore-certificate-errors"] = true
                     let opClient = client
                     let opData = data
@@ -504,13 +468,13 @@ final class JsonFetcherTests: QuickSpec {
                         let url: URL = URL(string: urlString)!
                         let response: URLResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: [:])!
                         given(try await opClient.data(for: any(), delegate: any())).willReturn((responseData, response))
-                        returned.set(result: try await JsonFetcher<[String:Any] >(client_: opClient).fetch(data: opData).value as! [String:Any])
+                        returned.set(result: try await JsonFetcher(client_: opClient).fetch(data: opData).value)
                     }
                     op.start()
                     op.waitUntilFinished()
                 }
                 it("then resolves the task with Json response") {
-                    expect((returned.get() as! Dictionary<String, String>)).to(equal(expected))
+                    expect(returned.get().dictionaryValue).to(equal(expected))
                 }
             }
         }

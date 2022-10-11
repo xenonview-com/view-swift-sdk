@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public protocol Api : Fetchable{
     func with(apiUrl: String) -> Fetchable
@@ -11,7 +12,7 @@ public protocol Api : Fetchable{
 public enum ApiBaseErrors: Error {
     case authenticationTokenError(String)
 }
-open class ApiBase<T>: Api {
+open class ApiBase: Api {
     open var fetcher: Fetchable
     private var name: String
     private var method: String
@@ -22,7 +23,7 @@ open class ApiBase<T>: Api {
     private var authenticated: Bool
 
     public init(props: Dictionary<String, Any>) {
-        fetcher = JsonFetcher<T>()
+        fetcher = JsonFetcher()
         name = props["name"] != nil ? props["name"] as! String : "ApiBase"
         method = props["method"] != nil ? props["method"] as! String : "POST"
         let defaultHeaders = ["content-type": "application/json"]
@@ -48,7 +49,7 @@ open class ApiBase<T>: Api {
 
     open func path(data: Dictionary<String, Any>) -> String { path_ }
 
-    open func fetch(data: Dictionary<String, Any>) throws -> Task<Any, Error> {
+    open func fetch(data: Dictionary<String, Any>) throws -> Task<JSON, Error> {
         let fetchUrl: String  = apiUrl + "/" + path(data: data);
         var fetchParameters: Dictionary<String, Any> = [
             "url": fetchUrl,

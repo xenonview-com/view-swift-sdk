@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public class Xenon {
     public enum Errors: Error {
@@ -213,7 +214,7 @@ public class Xenon {
         restoreJourney = []
     }
 
-    public func commit() throws -> Task<Any, Error> {
+    public func commit() throws -> Task<JSON, Error> {
         let params: Dictionary<String, Any> = [
             "id": id(),
             "journey": journey(),
@@ -226,9 +227,9 @@ public class Xenon {
         reset()
 
         return Task {
-            var result: Dictionary<String,Any> = [:]
+            var result = JSON([:])
             do {
-                result = try await journeyApi.with(apiUrl: Xenon.apiUrl).fetch(data: params).value as! [String:Any]
+                result = try await journeyApi.with(apiUrl: Xenon.apiUrl).fetch(data: params).value
             } catch {
                 try restore()
                 throw error
@@ -236,7 +237,7 @@ public class Xenon {
             return result
         }
     }
-    public func deanonymize(person:Dictionary<String,Any>) throws -> Task<Any, Error> {
+    public func deanonymize(person:Dictionary<String,Any>) throws -> Task<JSON, Error> {
         let params: Dictionary<String, Any> = [
             "id": id(),
             "person": person,
