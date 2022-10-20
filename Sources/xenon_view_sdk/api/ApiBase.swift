@@ -5,7 +5,6 @@
 import Foundation
 import SwiftyJSON
 
-@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 
 public protocol Api : Fetchable{
     func with(apiUrl: String) -> Fetchable
@@ -14,6 +13,8 @@ public protocol Api : Fetchable{
 public enum ApiBaseErrors: Error {
     case authenticationTokenError(String)
 }
+
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 open class ApiBase: Api {
     open var fetcher: Fetchable
     private var name: String
@@ -51,6 +52,7 @@ open class ApiBase: Api {
 
     open func path(data: Dictionary<String, Any>) -> String { path_ }
 
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     open func fetch(data: Dictionary<String, Any>) throws -> Task<JSON, Error> {
         let fetchUrl: String  = apiUrl + "/" + path(data: data);
         var fetchParameters: Dictionary<String, Any> = [

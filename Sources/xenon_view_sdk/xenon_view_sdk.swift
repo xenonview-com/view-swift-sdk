@@ -6,7 +6,6 @@ import Foundation
 import SwiftyJSON
 
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-
 public class Xenon {
     public enum Errors: Error {
         case authenticationTokenError(String)
@@ -216,6 +215,7 @@ public class Xenon {
         restoreJourney = []
     }
 
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func commit() throws -> Task<JSON, Error> {
         let params: Dictionary<String, Any> = [
             "id": id(),
@@ -239,6 +239,8 @@ public class Xenon {
             return result
         }
     }
+
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func deanonymize(person:Dictionary<String,Any>) throws -> Task<JSON, Error> {
         let params: Dictionary<String, Any> = [
             "id": id(),
