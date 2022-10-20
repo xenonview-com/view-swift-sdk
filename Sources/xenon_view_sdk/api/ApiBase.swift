@@ -5,7 +5,7 @@
 import Foundation
 import SwiftyJSON
 
-@available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 
 public protocol Api : Fetchable{
     func with(apiUrl: String) -> Fetchable
