@@ -6,6 +6,7 @@ import Foundation
 import ExceptionCatcher
 import SwiftyJSON
 
+@available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
 
 public protocol JsonFetcherClient {
     func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse)

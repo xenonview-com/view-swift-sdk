@@ -4,6 +4,8 @@
 
 import Foundation
 
+@available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
+
 open class DeanonymizeApi: ApiBase {
     public enum Errors: Error {
         case parameterError(String)

@@ -4,6 +4,8 @@
 
 import Foundation
 
+@available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
+
 open class JourneyApi: ApiBase {
     public convenience init() {
         self.init(props:[
