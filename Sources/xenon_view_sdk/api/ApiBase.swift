@@ -52,7 +52,6 @@ open class ApiBase: Api {
 
     open func path(data: Dictionary<String, Any>) -> String { path_ }
 
-    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     open func fetch(data: Dictionary<String, Any>) throws -> Task<JSON, Error> {
         let fetchUrl: String  = apiUrl + "/" + path(data: data);
         var fetchParameters: Dictionary<String, Any> = [
