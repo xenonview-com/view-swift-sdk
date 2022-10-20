@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
         name: "xenon_view_sdk",
         platforms: [
-            .macOS(.v12), .iOS(.v15), .tvOS(.v15)
+            .macOS(.v12), .iOS(.v11), .tvOS(.v15)
         ],
         products: [
             // Products define the executables and libraries a package produces, and make them visible to other packages.
