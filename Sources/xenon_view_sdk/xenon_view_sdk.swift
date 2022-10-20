@@ -5,6 +5,8 @@
 import Foundation
 import SwiftyJSON
 
+@available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
+
 public class Xenon {
     public enum Errors: Error {
         case authenticationTokenError(String)
