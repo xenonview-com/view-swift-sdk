@@ -6,13 +6,11 @@ import Foundation
 import ExceptionCatcher
 import SwiftyJSON
 
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public protocol JsonFetcherClient {
-    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse)
 }
 
-extension URLSession: JsonFetcherClient {
-}
 
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public protocol Fetchable {
@@ -37,7 +35,7 @@ public class JsonFetcher : Fetchable {
     private var client: JsonFetcherClient
 
     public init() {
-        client = URLSession.shared;
+        client = URLSession.shared as! JsonFetcherClient
     }
 
     public init(client_: JsonFetcherClient) {
