@@ -30,7 +30,7 @@ public enum JsonFetcherErrors: Error {
     case noDefault(String)
 }
 
-@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
 public class JsonFetcher : Fetchable {
 
     private var client: JsonFetcherClient
