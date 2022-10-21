@@ -14,8 +14,6 @@ import SwiftyJSON
 extension String: Error {
 }
 
-extension URLSession: JsonFetcherClient {
-}
 
 final class JsonFetcherTests: QuickSpec {
     override func spec() {

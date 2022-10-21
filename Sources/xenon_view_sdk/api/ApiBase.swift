@@ -5,7 +5,7 @@
 import Foundation
 import SwiftyJSON
 
-@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
 public protocol Api : Fetchable{
     func with(apiUrl: String) -> Fetchable
 }
@@ -14,7 +14,7 @@ public enum ApiBaseErrors: Error {
     case authenticationTokenError(String)
 }
 
-@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
 open class ApiBase: Api {
     open var fetcher: Fetchable
     private var name: String
