@@ -10,6 +10,7 @@ The Xenon View Swift SDK is the Swift SDK to interact with [XenonView](https://x
 
 ## <a name="whats-new"></a>
 ## What's New
+* v0.0.16 - Support macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0 and above, allow for compile for older versions.
 * v0.0.5 - Switched to SwiftyJSON based API responses, verses generics.
 * v0.0.4 - More flexible APIs
 * v0.0.3 - remove test dependencies from release
@@ -28,7 +29,7 @@ Add to your dependencies section:
 dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url:"https://github.com/xenonview-com/view-swift-sdk", from: "0.0.5"),
+        .package(url:"https://github.com/xenonview-com/view-swift-sdk", from: "0.0.16"),
         ...
 ```
 Then including as a dependency in your app in the targets section:
@@ -99,6 +100,14 @@ struct ExampleApp: App {
 
 Of course, you'll have to make the following modifications to the above code:
 - Replace `<API KEY>` with your [api key](https://xenonview.com/api-get)
+
+> **Note:** For older OS support, surround your calls with: 
+
+```swift
+if #available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *) {
+    Xenon().initialize(apiKey:"<API KEY>")
+}
+```
 
 ### Platforming
 After you have initialized View, you can optionally specify platform details such as:
