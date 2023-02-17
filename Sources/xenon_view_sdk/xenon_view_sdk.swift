@@ -20,7 +20,7 @@ public class Xenon {
     private static var apiKey: String = ""
     private static var allowSelfSigned: Bool = false
     private static var platform_: Dictionary<String, Any> = [:]
-    private static var tags_: Array<Any> = []
+    private static var variants_: Array<Any> = []
     private var restoreJourney: Array<Any> = []
 
     public init() {
@@ -111,12 +111,12 @@ public class Xenon {
         Xenon.platform_ = [:]
     }
 
-    public func tag(tags: Array<String>) {
-        Xenon.tags_ = tags
+    public func variant(names: Array<String>) {
+        Xenon.variants_ = names
     }
 
-    public func untag() {
-        Xenon.tags_ = []
+    public func resetVariants() {
+        Xenon.variants_ = []
     }
 
     // Stock Business Outcomes:
@@ -657,7 +657,7 @@ public class Xenon {
             "journey": journey(),
             "token": Xenon.apiKey,
             "timestamp": timestamp(),
-            "tags": Xenon.tags_,
+            "tags": Xenon.variants_,
             "platform": Xenon.platform_,
             "ignore-certificate-errors": Xenon.allowSelfSigned
         ]
@@ -713,8 +713,8 @@ public class Xenon {
         if (!Xenon.platform_.isEmpty) {
             contentToSave["platform"] = Xenon.platform_
         };
-        if (!Xenon.tags_.isEmpty) {
-            contentToSave["tags"] = Xenon.tags_
+        if (!Xenon.variants_.isEmpty) {
+            contentToSave["tags"] = Xenon.variants_
         };
 
         try journeyAdd(content: contentToSave)

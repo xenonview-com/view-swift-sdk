@@ -170,27 +170,27 @@ final class xenon_view_sdkTests: QuickSpec {
                     try! Xenon().applicationInstalled()
                 }
             }
-            describe("when adding outcome after tags reset") {
+            describe("when adding outcome after variants reset") {
                 it("then journey doesn't contain tags") {
                     let journey = Xenon().journey()[0] as! Dictionary<String, Any>
                     expect([String](journey.keys)).notTo(contain("tags"))
                 }
                 beforeEach {
-                    let tags = ["tag"]
-                    Xenon().tag(tags: tags)
-                    Xenon().untag()
+                    let variants = ["variant"]
+                    Xenon().variant(names: variants)
+                    Xenon().resetVariants()
                     try! Xenon().applicationInstalled()
                 }
             }
-            describe("when adding outcome after tags") {
+            describe("when adding outcome after variants") {
                 it("then journey contains tags") {
                     let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                    let tags = journey["tags"] as! Array<String>
-                    expect(tags).to(equal(["tag"]))
+                    let variants = journey["tags"] as! Array<String>
+                    expect(variants).to(equal(["variant"]))
                 }
                 beforeEach {
-                    let tags = ["tag"]
-                    Xenon().tag(tags: tags)
+                    let variants = ["variant"]
+                    Xenon().variant(names: variants)
                     try! Xenon().applicationInstalled()
                 }
             }
@@ -1229,6 +1229,9 @@ final class xenon_view_sdkTests: QuickSpec {
                     subject = Xenon(apiKey: apiKey, apiUrl: apiUrl, _journeyApi: journeyApi)
                     try! subject!.featureCompleted(feature: name)
                 }
+                afterEach {
+                    reset(journeyApi)
+                }
                 describe("when default api key") {
                     beforeEach {
                         given(try! journeyApi.fetch(data: any())).willReturn(Task {
@@ -1349,6 +1352,9 @@ final class xenon_view_sdkTests: QuickSpec {
                 beforeEach {
                     subject = Xenon(apiKey: apiKey, apiUrl: apiUrl, _journeyApi: journeyApi, _deanonApi: deanonApi, _heartbeatApi: heartbeatApi)
                     try! subject!.featureCompleted(feature: name)
+                }
+                afterEach {
+                    reset(heartbeatApi)
                 }
                 describe("when default api key") {
                     beforeEach {
@@ -1472,6 +1478,9 @@ final class xenon_view_sdkTests: QuickSpec {
                 ]
                 beforeEach {
                     subject = Xenon(apiKey: apiKey, apiUrl: apiUrl, _journeyApi: journeyApi, _deanonApi: deanonApi)
+                }
+                afterEach {
+                    reset(deanonApi)
                 }
                 describe("when default"){
                     beforeEach{
