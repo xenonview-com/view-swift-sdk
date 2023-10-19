@@ -175,111 +175,310 @@ public class Xenon {
         try outcomeAdd(content: content)
     }
 
+    private func addMethodToContent(content: Dictionary<String, Any>, method: String)  -> Dictionary<String, Any> {
+        var newContent = content
+        newContent["method"] = method
+        return newContent
+    }
+    private func addPriceToContent(content: Dictionary<String, Any>, price: String)  -> Dictionary<String, Any> {
+        var newContent = content
+        newContent["price"] = price
+        return newContent
+    }
+    private func addTermToContent(content: Dictionary<String, Any>, term: String)  -> Dictionary<String, Any> {
+        var newContent = content
+        newContent["term"] = term
+        return newContent
+    }
+    private func addIdToContent(content: Dictionary<String, Any>, id: String)  -> Dictionary<String, Any> {
+        var newContent = content
+        newContent["id"] = id
+        return newContent
+    }
+
+    public func initialSubscription(tier: String, method: String, price: String, term: String) throws {
+        var content = initialSubscriptionContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
+        try outcomeAdd(content: content)
+    }
+    public func initialSubscription(tier: String, method: String, price: String) throws {
+        var content = initialSubscriptionContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
     public func initialSubscription(tier: String, method: String) throws {
-        let content = [
+        var content = initialSubscriptionContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func initialSubscriptionContent(tier: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Initial Subscription",
             "outcome": "Subscribe - " + tier,
-            "result": "success",
-            "method": method
+            "result": "success"
         ]
-        try outcomeAdd(content: content)
     }
     public func initialSubscription(tier: String) throws {
-        let content = [
-            "superOutcome": "Initial Subscription",
-            "outcome": "Subscribe - " + tier,
-            "result": "success"
-        ]
+        let content = initialSubscriptionContent(tier: tier)
         try outcomeAdd(content: content)
     }
 
+    public func subscriptionDeclined(tier: String, method: String, price: String, term: String) throws {
+        var content = subscriptionDeclinedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionDeclined(tier: String, method: String, price: String) throws {
+        var content = subscriptionDeclinedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
     public func subscriptionDeclined(tier: String, method: String) throws {
-        let content = [
+        var content = subscriptionDeclinedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func subscriptionDeclinedContent(tier: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Initial Subscription",
             "outcome": "Decline - " + tier,
-            "result": "fail",
-            "method": method
+            "result": "fail"
         ]
-        try outcomeAdd(content: content)
     }
     public func subscriptionDeclined(tier: String) throws {
-        let content = [
-            "superOutcome": "Initial Subscription",
-            "outcome": "Decline - " + tier,
-            "result": "fail"
-        ]
+        let content = subscriptionDeclinedContent(tier: tier)
         try outcomeAdd(content: content)
     }
 
+    public func subscriptionRenewed(tier: String, method: String, price: String, term: String) throws {
+        var content = subscriptionRenewedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionRenewed(tier: String, method: String, price: String) throws {
+        var content = subscriptionRenewedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
     public func subscriptionRenewed(tier: String, method: String) throws {
-        let content = [
+        var content = subscriptionRenewedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func subscriptionRenewedContent(tier: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Subscription Renewal",
             "outcome": "Renew - " + tier,
-            "result": "success",
-            "method": method
+            "result": "success"
         ]
-        try outcomeAdd(content: content)
     }
     public func subscriptionRenewed(tier: String) throws {
-        let content = [
-            "superOutcome": "Subscription Renewal",
-            "outcome": "Renew - " + tier,
-            "result": "success"
-        ]
+        let content = subscriptionRenewedContent(tier: tier)
         try outcomeAdd(content: content)
     }
 
+    public func subscriptionCanceled(tier: String, method: String, price: String, term: String) throws {
+        var content = subscriptionCanceledContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionCanceled(tier: String, method: String, price: String) throws {
+        var content = subscriptionCanceledContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
     public func subscriptionCanceled(tier: String, method: String) throws {
-        let content = [
+        var content = subscriptionCanceledContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func subscriptionCanceledContent(tier: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Subscription Renewal",
             "outcome": "Cancel - " + tier,
-            "result": "fail",
-            "method": method
+            "result": "fail"
         ]
-        try outcomeAdd(content: content)
     }
     public func subscriptionCanceled(tier: String) throws {
-        let content = [
-            "superOutcome": "Subscription Renewal",
-            "outcome": "Cancel - " + tier,
-            "result": "fail"
-        ]
+        let content = subscriptionCanceledContent(tier: tier)
         try outcomeAdd(content: content)
     }
 
-    public func subscriptionUpsold(tier: String, method: String) throws {
-        let content = [
-            "superOutcome": "Subscription Upsold",
-            "outcome": "Upsold - " + tier,
-            "result": "success",
-            "method": method
-        ]
+    public func subscriptionPaused(tier: String, method: String, price: String, term: String) throws {
+        var content = subscriptionPausedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
         try outcomeAdd(content: content)
     }
-    public func subscriptionUpsold(tier: String) throws {
-        let content = [
+    public func subscriptionPaused(tier: String, method: String, price: String) throws {
+        var content = subscriptionPausedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionPaused(tier: String, method: String) throws {
+        var content = subscriptionPausedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func subscriptionPausedContent(tier: String) -> Dictionary<String, Any> {
+        [
+            "superOutcome": "Subscription Renewal",
+            "outcome": "Paused - " + tier,
+            "result": "fail"
+        ]
+    }
+    public func subscriptionPaused(tier: String) throws {
+        let content = subscriptionPausedContent(tier: tier)
+        try outcomeAdd(content: content)
+    }
+
+    public func subscriptionUpsold(tier: String, method: String, price: String, term: String) throws {
+        var content = subscriptionUpsoldContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionUpsold(tier: String, method: String, price: String) throws {
+        var content = subscriptionUpsoldContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionUpsold(tier: String, method: String) throws {
+        var content = subscriptionUpsoldContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func subscriptionUpsoldContent(tier: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Subscription Upsold",
             "outcome": "Upsold - " + tier,
             "result": "success"
         ]
+    }
+    public func subscriptionUpsold(tier: String) throws {
+        let content = subscriptionUpsoldContent(tier: tier)
         try outcomeAdd(content: content)
     }
 
-    public func subscriptionUpsellDeclined(tier: String, method: String) throws {
-        let content = [
-            "superOutcome": "Subscription Upsold",
-            "outcome": "Declined - " + tier,
-            "result": "fail",
-            "method": method
-        ]
+    public func subscriptionUpsellDeclined(tier: String, method: String, price: String, term: String) throws {
+        var content = subscriptionUpsellDeclinedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
         try outcomeAdd(content: content)
     }
-    public func subscriptionUpsellDeclined(tier: String) throws {
-        let content = [
+    public func subscriptionUpsellDeclined(tier: String, method: String, price: String) throws {
+        var content = subscriptionUpsellDeclinedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionUpsellDeclined(tier: String, method: String) throws {
+        var content = subscriptionUpsellDeclinedContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func subscriptionUpsellDeclinedContent(tier: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Subscription Upsold",
             "outcome": "Declined - " + tier,
             "result": "fail"
         ]
+    }
+    public func subscriptionUpsellDeclined(tier: String) throws {
+        let content = subscriptionUpsellDeclinedContent(tier: tier)
+        try outcomeAdd(content: content)
+    }
+
+    public func subscriptionDownsell(tier: String, method: String, price: String, term: String) throws {
+        var content = subscriptionDownsellContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        content = addTermToContent(content: content, term: term)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionDownsell(tier: String, method: String, price: String) throws {
+        var content = subscriptionDownsellContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    public func subscriptionDownsell(tier: String, method: String) throws {
+        var content = subscriptionDownsellContent(tier: tier)
+        content = addMethodToContent(content: content, method: method)
+        try outcomeAdd(content: content)
+    }
+    private func subscriptionDownsellContent(tier: String) -> Dictionary<String, Any> {
+        [
+            "superOutcome": "Subscription Upsold",
+            "outcome": "Downsell - " + tier,
+            "result": "fail"
+        ]
+    }
+    public func subscriptionDownsell(tier: String) throws {
+        let content = subscriptionDownsellContent(tier: tier)
+        try outcomeAdd(content: content)
+    }
+
+    public func adClicked(provider: String, id: String, price: String) throws {
+        var content = adClickedContent(provider: provider)
+        content = addIdToContent(content: content, id: id)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    public func adClicked(provider: String, id: String) throws {
+        var content = adClickedContent(provider: provider)
+        content = addIdToContent(content: content, id: id)
+        try outcomeAdd(content: content)
+    }
+    private func adClickedContent(provider: String) -> Dictionary<String, Any> {
+        [
+            "superOutcome": "Advertisement",
+            "outcome": "Ad Click - " + provider,
+            "result": "success"
+        ]
+    }
+    public func adClicked(provider: String) throws {
+        let content = adClickedContent(provider: provider)
+        try outcomeAdd(content: content)
+    }
+
+    public func adIgnored(provider: String, id: String, price: String) throws {
+        var content = adIgnoredContent(provider: provider)
+        content = addIdToContent(content: content, id: id)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    public func adIgnored(provider: String, id: String) throws {
+        var content = adIgnoredContent(provider: provider)
+        content = addIdToContent(content: content, id: id)
+        try outcomeAdd(content: content)
+    }
+    private func adIgnoredContent(provider: String) -> Dictionary<String, Any> {
+        [
+            "superOutcome": "Advertisement",
+            "outcome": "Ad Ignored - " + provider,
+            "result": "fail"
+        ]
+    }
+    public func adIgnored(provider: String) throws {
+        let content = adIgnoredContent(provider: provider)
         try outcomeAdd(content: content)
     }
 
@@ -339,21 +538,37 @@ public class Xenon {
         try outcomeAdd(content: content)
     }
 
-    public func upsold(product: String) throws {
-        let content = [
+    public func upsold(product: String, price: String) throws {
+        var content = upsoldContent(product: product)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    private func upsoldContent(product: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Upsold Product",
             "outcome": "Upsold - " + product,
             "result": "success"
         ]
+    }
+    public func upsold(product: String) throws {
+        let content = upsoldContent(product: product)
         try outcomeAdd(content: content)
     }
 
-    public func upsellDismissed(product: String) throws {
-        let content = [
+    public func upsellDismissed(product: String, price: String) throws {
+        var content = upsellDismissedContent(product: product)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    private func upsellDismissedContent(product: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Upsold Product",
             "outcome": "Dismissed - " + product,
             "result": "fail"
         ]
+    }
+    public func upsellDismissed(product: String) throws {
+        let content = upsellDismissedContent(product: product)
         try outcomeAdd(content: content)
     }
 
@@ -384,29 +599,43 @@ public class Xenon {
         try outcomeAdd(content: content)
     }
 
-    public func purchased(method: String) throws {
-        let content = [
+    public func purchased(method: String, price: String) throws {
+        var content = purchasedContent(method: method)
+        content = addPriceToContent(content: content, price: price)
+        try outcomeAdd(content: content)
+    }
+    private func purchasedContent(method: String) -> Dictionary<String, Any> {
+        [
             "superOutcome": "Customer Purchase",
             "outcome": "Purchase - " + method,
             "result": "success"
         ]
+    }
+    public func purchased(method: String) throws {
+        let content = purchasedContent(method: method)
         try outcomeAdd(content: content)
     }
 
-    public func purchaseCanceled(method: String) throws {
-        let content = [
-            "superOutcome": "Customer Purchase",
-            "outcome": "Canceled - " + method,
-            "result": "fail"
-        ]
+    public func purchaseCanceled(method: String, price: String) throws {
+        var content = purchaseCanceledContent()
+        content["outcome"] = "Canceled - " + method
+        content = addPriceToContent(content: content, price: price)
         try outcomeAdd(content: content)
     }
-    public func purchaseCanceled() throws {
-        let content = [
+    public func purchaseCanceled(method: String) throws {
+        var content = purchaseCanceledContent()
+        content["outcome"] = "Canceled - " + method
+        try outcomeAdd(content: content)
+    }
+    private func purchaseCanceledContent() -> Dictionary<String, Any> {
+        [
             "superOutcome": "Customer Purchase",
             "outcome": "Canceled",
             "result": "fail"
         ]
+    }
+    public func purchaseCanceled() throws {
+        let content = purchaseCanceledContent()
         try outcomeAdd(content: content)
     }
 
@@ -579,6 +808,24 @@ public class Xenon {
         let content = [
             "category": "Content",
             "action": "Deleted",
+            "type": type
+        ]
+        try journeyAdd(content: content)
+    }
+
+    public func contentArchived(type: String, identifier: String) throws {
+        let content = [
+            "category": "Content",
+            "action": "Archived",
+            "type": type,
+            "identifier": identifier
+        ]
+        try journeyAdd(content: content)
+    }
+    public func contentArchived(type: String) throws {
+        let content = [
+            "category": "Content",
+            "action": "Archived",
             "type": type
         ]
         try journeyAdd(content: content)

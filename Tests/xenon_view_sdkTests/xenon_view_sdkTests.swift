@@ -268,12 +268,29 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when initialSubscription"){
                 let Silver = "Silver Monthly"
                 let method = "Stripe" // optional
+                let price = "$25" // optional
+                let term = "30d" //optional
+                describe("when has method and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().initialSubscription(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().initialSubscription(tier: Silver, method: method, price: price)
+                    }
+                }
                 describe("when has method"){
                     it("then creates journey with outcome"){
                         let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                        expect(journey["superOutcome"] as! String).to(equal("Initial Subscription"))
-                        expect(journey["outcome"] as! String).to(equal("Subscribe - " + Silver))
-                        expect(journey["result"] as! String).to(equal("success"))
                         expect(journey["method"] as! String).to(equal(method))
                     }
                     beforeEach{
@@ -296,12 +313,29 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when subscriptionDeclined"){
                 let Silver = "Silver Monthly"
                 let method = "Stripe" // optional
+                let price = "$25" // optional
+                let term = "30d" //optional
+                describe("when has method, price and term"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionDeclined(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionDeclined(tier: Silver, method: method, price: price)
+                    }
+                }
                 describe("when has method"){
                     it("then creates journey with outcome"){
                         let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                        expect(journey["superOutcome"] as! String).to(equal("Initial Subscription"))
-                        expect(journey["outcome"] as! String).to(equal("Decline - " + Silver))
-                        expect(journey["result"] as! String).to(equal("fail"))
                         expect(journey["method"] as! String).to(equal(method))
                     }
                     beforeEach{
@@ -324,12 +358,29 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when subscriptionRenewed") {
                 let Silver = "Silver Monthly"
                 let method = "Stripe" // optional
+                let price = "$25" // optional
+                let term = "30d" //optional
+                describe("when has method, price and term") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionRenewed(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionRenewed(tier: Silver, method: method, price: price)
+                    }
+                }
                 describe("when has method") {
                     it("then creates journey with outcome") {
                         let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                        expect(journey["superOutcome"] as! String).to(equal("Subscription Renewal"))
-                        expect(journey["outcome"] as! String).to(equal("Renew - " + Silver))
-                        expect(journey["result"] as! String).to(equal("success"))
                         expect(journey["method"] as! String).to(equal(method))
                     }
                     beforeEach{
@@ -354,12 +405,29 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when subscriptionCanceled") {
                 let Silver = "Silver Monthly"
                 let method = "Stripe" // optional
+                let price = "$25" // optional
+                let term = "30d" //optional
                 describe("when has method") {
                     it("then creates journey with outcome") {
                         let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                        expect(journey["superOutcome"] as! String).to(equal("Subscription Renewal"))
-                        expect(journey["outcome"] as! String).to(equal("Cancel - " + Silver))
-                        expect(journey["result"] as! String).to(equal("fail"))
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionCanceled(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionCanceled(tier: Silver, method: method, price: price)
+                    }
+                }
+                describe("when has method") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
                         expect(journey["method"] as! String).to(equal(method))
                     }
                     beforeEach{
@@ -379,15 +447,77 @@ final class xenon_view_sdkTests: QuickSpec {
                     }
                 }
             }
+            describe("when subscriptionPaused") {
+                let Silver = "Silver Monthly"
+                let method = "Stripe" // optional
+                let price = "$25" // optional
+                let term = "30d" //optional
+                describe("when has method") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionPaused(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionPaused(tier: Silver, method: method, price: price)
+                    }
+                }
+                describe("when has method") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["method"] as! String).to(equal(method))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionPaused(tier: Silver, method: method)
+                    }
+                }
+                describe("when no method") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["superOutcome"] as! String).to(equal("Subscription Renewal"))
+                        expect(journey["outcome"] as! String).to(equal("Paused - " + Silver))
+                        expect(journey["result"] as! String).to(equal("fail"))
+                        expect([String](journey.keys)).notTo(contain("method"))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionPaused(tier: Silver)
+                    }
+                }
+            }
             describe("when subscriptionUpsold"){
                 let Silver = "Silver Monthly"
                 let method = "Stripe" // optional
+                let price = "$25" // optional
+                let term = "30d" //optional
+                describe("when has method, price and term"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionUpsold(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionUpsold(tier: Silver, method: method, price: price)
+                    }
+                }
                 describe("when has method"){
                     it("then creates journey with outcome"){
                         let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                        expect(journey["superOutcome"] as! String).to(equal("Subscription Upsold"))
-                        expect(journey["outcome"] as! String).to(equal("Upsold - " + Silver))
-                        expect(journey["result"] as! String).to(equal("success"))
                         expect(journey["method"] as! String).to(equal(method))
                     }
                     beforeEach{
@@ -410,12 +540,29 @@ final class xenon_view_sdkTests: QuickSpec {
             describe("when subscriptionUpsellDeclined"){
                 let Silver = "Silver Monthly"
                 let method = "Stripe" // optional
+                let price = "$25" // optional
+                let term = "30d" //optional
+                describe("when has method, price and term"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionUpsellDeclined(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionUpsellDeclined(tier: Silver, method: method, price: price)
+                    }
+                }
                 describe("when has method"){
                     it("then creates journey with outcome"){
                         let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                        expect(journey["superOutcome"] as! String).to(equal("Subscription Upsold"))
-                        expect(journey["outcome"] as! String).to(equal("Declined - " + Silver))
-                        expect(journey["result"] as! String).to(equal("fail"))
                         expect(journey["method"] as! String).to(equal(method))
                     }
                     beforeEach{
@@ -432,6 +579,119 @@ final class xenon_view_sdkTests: QuickSpec {
                     }
                     beforeEach{
                         try! Xenon().subscriptionUpsellDeclined(tier: Silver)
+                    }
+                }
+            }
+            describe("when subscriptionDownsell"){
+                let Silver = "Silver Monthly"
+                let method = "Stripe" // optional
+                let price = "$15" // optional
+                let term = "30d" //optional
+                describe("when has method, price and term"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["term"] as! String).to(equal(term))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionDownsell(tier: Silver, method: method, price: price, term: term)
+                    }
+                }
+                describe("when has method and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionDownsell(tier: Silver, method: method, price: price)
+                    }
+                }
+                describe("when has method"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["method"] as! String).to(equal(method))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionDownsell(tier: Silver, method: method)
+                    }
+                }
+                describe("when no method"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["superOutcome"] as! String).to(equal("Subscription Upsold"))
+                        expect(journey["outcome"] as! String).to(equal("Downsell - " + Silver))
+                        expect(journey["result"] as! String).to(equal("fail"))
+                        expect([String](journey.keys)).notTo(contain("method"))
+                    }
+                    beforeEach{
+                        try! Xenon().subscriptionDownsell(tier: Silver)
+                    }
+                }
+            }
+            describe("when adClicked"){
+                let provider = "AdMob"
+                let id = "AM-1234" // optional
+                let price = "$25" // optional
+                describe("when has id and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().adClicked(provider: provider, id: id, price: price)
+                    }
+                }
+                describe("when has id"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["id"] as! String).to(equal(id))
+                    }
+                    beforeEach{
+                        try! Xenon().adClicked(provider: provider, id: id)
+                    }
+                }
+                describe("when has provider"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["superOutcome"] as! String).to(equal("Advertisement"))
+                        expect(journey["outcome"] as! String).to(equal("Ad Click - " + provider))
+                        expect(journey["result"] as! String).to(equal("success"))
+                    }
+                    beforeEach{
+                        try! Xenon().adClicked(provider: provider)
+                    }
+                }
+            }
+            describe("when adIgnored"){
+                let provider = "AdMob"
+                let id = "AM-1234" // optional
+                let price = "$25" // optional
+                describe("when has id and price"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().adIgnored(provider: provider, id: id, price: price)
+                    }
+                }
+                describe("when has id"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["id"] as! String).to(equal(id))
+                    }
+                    beforeEach{
+                        try! Xenon().adIgnored(provider: provider, id: id)
+                    }
+                }
+                describe("when has provider"){
+                    it("then creates journey with outcome"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["superOutcome"] as! String).to(equal("Advertisement"))
+                        expect(journey["outcome"] as! String).to(equal("Ad Ignored - " + provider))
+                        expect(journey["result"] as! String).to(equal("fail"))
+                    }
+                    beforeEach{
+                        try! Xenon().adIgnored(provider: provider)
                     }
                 }
             }
@@ -518,26 +778,50 @@ final class xenon_view_sdkTests: QuickSpec {
             }
             describe("when upsold") {
                 let laptop = "Dell XPS"
-                it("then creates journey with outcome") {
-                    let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                    expect(journey["superOutcome"] as! String).to(equal("Upsold Product"))
-                    expect(journey["outcome"] as! String).to(equal("Upsold - " + laptop))
-                    expect(journey["result"] as! String).to(equal("success"))
+                let price = "$1499" // optional
+                describe("when has price") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().upsold(product: laptop, price: price)
+                    }
                 }
-                beforeEach{
-                    try! Xenon().upsold(product: laptop)
+                describe("when default") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["superOutcome"] as! String).to(equal("Upsold Product"))
+                        expect(journey["outcome"] as! String).to(equal("Upsold - " + laptop))
+                        expect(journey["result"] as! String).to(equal("success"))
+                    }
+                    beforeEach{
+                        try! Xenon().upsold(product: laptop)
+                    }
                 }
             }
             describe("when upsellDismissed") {
                 let laptop = "Dell XPS"
-                it("then creates journey with outcome") {
-                    let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                    expect(journey["superOutcome"] as! String).to(equal("Upsold Product"))
-                    expect(journey["outcome"] as! String).to(equal("Dismissed - " + laptop))
-                    expect(journey["result"] as! String).to(equal("fail"))
+                let price = "$1499" // optional
+                describe("when has price") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().upsellDismissed(product: laptop, price: price)
+                    }
                 }
-                beforeEach{
-                    try! Xenon().upsellDismissed(product: laptop)
+                describe("when default") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["superOutcome"] as! String).to(equal("Upsold Product"))
+                        expect(journey["outcome"] as! String).to(equal("Dismissed - " + laptop))
+                        expect(journey["result"] as! String).to(equal("fail"))
+                    }
+                    beforeEach {
+                        try! Xenon().upsellDismissed(product: laptop)
+                    }
                 }
             }
             describe("when checkedOut"){
@@ -576,18 +860,40 @@ final class xenon_view_sdkTests: QuickSpec {
             }
             describe("when purchased") {
                 let method = "Stripe"
-                it("then creates journey with outcome") {
-                    let journey = Xenon().journey()[0] as! Dictionary<String, Any>
-                    expect(journey["superOutcome"] as! String).to(equal("Customer Purchase"))
-                    expect(journey["outcome"] as! String).to(equal("Purchase - " + method))
-                    expect(journey["result"] as! String).to(equal("success"))
+                let price = "$1499" // optional
+                describe("when has price") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().purchased(method: method, price: price)
+                    }
                 }
-                beforeEach {
-                    try! Xenon().purchased(method: method)
+                describe("when default") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["superOutcome"] as! String).to(equal("Customer Purchase"))
+                        expect(journey["outcome"] as! String).to(equal("Purchase - " + method))
+                        expect(journey["result"] as! String).to(equal("success"))
+                    }
+                    beforeEach {
+                        try! Xenon().purchased(method: method)
+                    }
                 }
             }
             describe("when purchaseCanceled") {
                 let method = "Stripe"
+                let price = "$1499" // optional
+                describe("when has price") {
+                    it("then creates journey with outcome") {
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["price"] as! String).to(equal(price))
+                    }
+                    beforeEach{
+                        try! Xenon().purchaseCanceled(method: method, price: price)
+                    }
+                }
                 describe("when method") {
                     it("then creates journey with outcome") {
                         let journey = Xenon().journey()[0] as! Dictionary<String, Any>
@@ -867,6 +1173,34 @@ final class xenon_view_sdkTests: QuickSpec {
                     }
                     beforeEach {
                         try! Xenon().contentDeleted(type: contentType)
+                    }
+                }
+            }
+            describe("when contentArchived"){
+                let contentType = "Blog Post"
+                let identifier = "how-to-install-xenon-view" // optional
+                describe("when has identifier"){
+                    it("then has a milestone"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["category"] as! String).to(equal("Content"))
+                        expect(journey["action"] as! String).to(equal("Archived"))
+                        expect(journey["type"] as! String).to(equal(contentType))
+                        expect(journey["identifier"] as! String).to(equal(identifier))
+                    }
+                    beforeEach {
+                        try! Xenon().contentArchived(type: contentType, identifier: identifier)
+                    }
+                }
+                describe("when has no identifier"){
+                    it("then has a milestone"){
+                        let journey = Xenon().journey()[0] as! Dictionary<String, Any>
+                        expect(journey["category"] as! String).to(equal("Content"))
+                        expect(journey["action"] as! String).to(equal("Archived"))
+                        expect(journey["type"] as! String).to(equal(contentType))
+                        expect([String](journey.keys)).notTo(contain("identifier"))
+                    }
+                    beforeEach {
+                        try! Xenon().contentArchived(type: contentType)
                     }
                 }
             }

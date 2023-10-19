@@ -18,11 +18,13 @@ swift build
 You can run the tests for the whole project in the root directory by simply running:
 
 ```bash
+./develop
 swift test
 ```
 
 Or by test
 ```bash
+./develop
 swift test --filter"test_name"
 ```
 
@@ -32,6 +34,8 @@ The following sections show how to run testing variants during development.
 
 To run the tests in "coverage mode" (runs all tests then calculates coverage for each dir/file):
 ```bash
+./develop
+
 ./coverage_report
 # --- OR ---
 ./coverage_html
@@ -46,6 +50,7 @@ _We (package maintainers) handle this step so this is more of internal notes:_
 
 To publish the package:
 ```bash
+./prelease
 ./release
 ```
 

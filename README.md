@@ -1,50 +1,51 @@
 # xenon-view-sdk
 The Xenon View Swift SDK is the Swift SDK to interact with [XenonView](https://xenonview.com).
 
-**Table of contents:** <a id="contents"></a>
+**Table of contents:** <a id='contents'></a>
 
-* [What"s New](#whats-new)
+* [What's New](#whats-new)
 * [Introduction](#intro)
 * [Steps To Get Started](#getting-started)
-  * [Identify Business Outcomes](#step-1)
-  * [Identify Customer Journey Milestones](#step-2)
-  * [Enumerate Technical Stack](#step-3)
-  * [Installation](#step-4)
-  * [Instrument Business Outcomes](#step-5)
-  * [Instrument Customer Journey Milestones](#step-6)
-  * [Determine Commit Points](#step-7)
-  * [(Optional) Group Customer Journeys](#step-8)
-  * [Analysis](#step-9)
-  * [Perform Experiments](#step-10)
+    * [Identify Business Outcomes](#step-1)
+    * [Identify Customer Journey Milestones](#step-2)
+    * [Enumerate Technical Stack](#step-3)
+    * [Installation](#step-4)
+    * [Instrument Business Outcomes](#step-5)
+    * [Instrument Customer Journey Milestones](#step-6)
+    * [Determine Commit Points](#step-7)
+    * [(Optional) Group Customer Journeys](#step-8)
+    * [Analysis](#step-9)
+    * [Perform Experiments](#step-10)
 * [Detailed Usage](#detailed-usage)
-  * [Installation](#installation)
-  * [Initialization](#instantiation)
-  * [Service/Subscription/SaaS Business Outcomes](#saas)
-  * [Ecommerce Business Outcomes](#ecom)
-  * [Customer Journey Milestones](#milestones)
-    * [Features Usage](#feature-usage)
-    * [Content Interaction](#content-interaction)
-  * [Commit Points](#commiting)
-  * [Heartbeats](#heartbeat)
-  * [Platforming](#platforming)
-  * [Experiments](#experiments)
-  * [Customer Journey Grouping](#deanonymizing-journeys)
-  * [Other Considerations](#other)
-    * [(Optional) Error Handling](#errors)
-    * [(Optional) Custom Customer Journey Milestones](#custom)
-    * [(Optional) Journey Identification](#cuuid)
+    * [Installation](#installation)
+    * [Initialization](#instantiation)
+    * [Service/Subscription/SaaS Business Outcomes](#saas)
+    * [Ecommerce Business Outcomes](#ecom)
+    * [Customer Journey Milestones](#milestones)
+        * [Features Usage](#feature-usage)
+        * [Content Interaction](#content-interaction)
+    * [Commit Points](#commiting)
+    * [Heartbeats](#heartbeat)
+    * [Platforming](#platforming)
+    * [Experiments](#experiments)
+    * [Customer Journey Grouping](#deanonymizing-journeys)
+    * [Other Considerations](#other)
+        * [(Optional) Error Handling](#errors)
+        * [(Optional) Custom Customer Journey Milestones](#custom)
+        * [(Optional) Journey Identification](#cuuid)
 * [License](#license)
 
 <br/>
 
-## What"s New <a id="whats-new"></a>
+## What's New <a id='whats-new'></a>
+* v0.1.2 - Added: Downsell, Ad, Content Archive, Subscription Pause and included price/term for all subscriptions.
 * v0.1.1 - Rename tag to variant
 * v0.1.0 - SDK redesign
 
 <br/>
 
 
-## Introduction <a id="intro"></a>
+## Introduction <a id='intro'></a>
 Everyone should have access to world-class customer telemetry.
 
 You should be able to identify the most pressing problems affecting your business quickly.
@@ -60,8 +61,8 @@ With the correct approach to instrumentation coupled with AI-enhanced analytics,
 
 [back to top](#contents)
 
-## Get Started With The Following Steps: <a id="getting-started"></a>
-The Xenon View SDK can be used in your application to provide a new level of customer telemetry. You"ll need to embed the instrumentation into your website/application via this SDK.
+## Get Started With The Following Steps: <a id='getting-started'></a>
+The Xenon View SDK can be used in your application to provide a new level of customer telemetry. You'll need to embed the instrumentation into your website/application via this SDK.
 
 Instrumentation will vary based on your use case; are you offering a service/subscription (SaaS) or selling products (Ecom)?
 
@@ -73,7 +74,7 @@ In a nutshell, the steps to get started are as follows:
 <br/>
 
 
-### Step 1 - Business Outcomes <a id="step-1"></a>
+### Step 1 - Business Outcomes <a id='step-1'></a>
 
 Regardless of your business model, your first step will be identifying your desired business outcomes.
 
@@ -96,7 +97,7 @@ Regardless of your business model, your first step will be identifying your desi
 <br/>
 
 
-### Step 2 - Customer Journey Milestones <a id="step-2"></a>
+### Step 2 - Customer Journey Milestones <a id='step-2'></a>
 
 For each Business Outcome, identify potential customer journey milestones leading up to that business outcome.
 
@@ -114,7 +115,7 @@ For each Business Outcome, identify potential customer journey milestones leadin
 
 <br/>
 
-### Step 3 - Enumerate Technical Stack <a id="step-3"></a>
+### Step 3 - Enumerate Technical Stack <a id='step-3'></a>
 
 Next, you will want to figure out which SDK to use. We have some of the most popular languages covered.
 
@@ -126,6 +127,7 @@ Start by listing the technologies involved and what languages your company uses.
 
 Next, figure out how your outcomes spread across those technologies. Below are pointers to our currently supported languages:
 * [React](https://github.com/xenonview-com/view-js-sdk)
+* [Next.Js](https://github.com/xenonview-com/view-js-sdk)
 * [Angular](https://github.com/xenonview-com/view-js-sdk)
 * [HTML](https://github.com/xenonview-com/view-js-sdk)
 * [Plain JavaScript](https://github.com/xenonview-com/view-js-sdk)
@@ -138,17 +140,17 @@ Next, figure out how your outcomes spread across those technologies. Below are p
 Finally, continue the steps below for each technology and outcome.
 
 
-### Step 4 - Installation <a id="step-4"></a>
+### Step 4 - Installation <a id='step-4'></a>
 
 After you have done the prework of [Step 1](#step-1) and [Step 2](#step-2), you are ready to [install Xenon View](#installation).
-Once installed, you"ll need to [initialize the SDK](#instantiation) and get started instrumenting.
+Once installed, you'll need to [initialize the SDK](#instantiation) and get started instrumenting.
 
 
 <br/>
 <br/>
 
 
-### Step 5 - Instrument Business Outcomes <a id="step-5"></a>
+### Step 5 - Instrument Business Outcomes <a id='step-5'></a>
 
 We have provided several SDK calls to shortcut your instrumentation and map to the outcomes identified in [Step 1](#step-1).  
 These calls will roll up into the associated Categories during analysis. These rollups allow you to view each Category in totality.
@@ -156,34 +158,35 @@ As you view the categories, you can quickly identify issues (for example, if the
 
 **[Service/Subscription/SaaS Related Outcome Calls](#saas)**  (click on a call to see usage)
 
-| Category | Success | Failure | 
+| Category | Success | Decline |
 | --- | --- | --- |
-| Lead Capture | [`leadCaptured()`](#saas-lead-capture) | [`leadCaptureDeclined()`](#saas-lead-capture-fail) | 
-| Account Signup | [`accountSignup()`](#saas-account-signup) | [`accountSignupDeclined()`](#saas-account-signup-fail) | 
-| Application Installation | [`applicationInstalled()`](#saas-application-install) |  [`applicationNotInstalled()`](#saas-application-install-fail) | 
+| Lead Capture | [`leadCaptured()`](#saas-lead-capture) | [`leadCaptureDeclined()`](#saas-lead-capture-fail) |
+| Account Signup | [`accountSignup()`](#saas-account-signup) | [`accountSignupDeclined()`](#saas-account-signup-fail) |
+| Application Installation | [`applicationInstalled()`](#saas-application-install) | [`applicationNotInstalled()`](#saas-application-install-fail)|
 | Initial Subscription | [`initialSubscription()`](#saas-initial-subscription) | [`subscriptionDeclined()`](#saas-initial-subscription-fail) |
-| Subscription Renewed | [`subscriptionRenewed()`](#saas-renewed-subscription) | [`subscriptionCanceled()`](#saas-renewed-subscription-fail) | 
-| Subscription Upsell | [`subscriptionUpsold()`](#saas-upsell-subscription) | [`subscriptionUpsellDeclined()`](#saas-upsell-subscription-fail) | 
-| Referral | [`referral()`](#saas-referral) | [`referralDeclined()`](#saas-referral-fail) | 
+| Subscription Renewed | [`subscriptionRenewed()`](#saas-renewed-subscription) | [`subscriptionCanceled()`](#saas-renewed-subscription-fail) / [`subscriptionPaused()`](#saas-paused-subscription) |
+| Subscription Upsell | [`subscriptionUpsold()`](#saas-upsell-subscription) | [`subscriptionUpsellDeclined()`](#saas-upsell-subscription-fail) / [`subscriptionDownsell()`](#saas-downsell-subscription) |
+| Ad Clicked | [`adClicked()`](#saas-ad-clicked) | [`adIgnored()`](#saas-ad-ignored) |
+| Referral | [`referral()`](#saas-referral) | [`referralDeclined()`](#saas-referral-fail) |
 
 
 **[Ecom Related Outcome Calls](#ecom)** (click on a call to see usage)
 
-| Category | Success | Failure |
-| --- | --- | --- | 
-| Lead Capture | [`leadCaptured()`](#ecom-lead-capture) | [`leadCaptureDeclined()`](#ecom-lead-capture-fail) | 
-| Account Signup | [`accountSignup()`](#ecom-account-signup) | [`accountSignupDeclined()`](#ecom-account-signup-fail) | 
+| Category | Success | Decline |
+| --- | --- | --- |
+| Lead Capture | [`leadCaptured()`](#ecom-lead-capture) | [`leadCaptureDeclined()`](#ecom-lead-capture-fail) |
+| Account Signup | [`accountSignup()`](#ecom-account-signup) | [`accountSignupDeclined()`](#ecom-account-signup-fail) |
 | Add To Cart | [`productAddedToCart()`](#ecom-product-to-cart) | [`productNotAddedToCart()`](#ecom-product-to-cart-fail) |
-| Product Upsell | [`upsold()`](#ecom-upsell) | [`upsellDismissed()`](#ecom-upsell-fail) | 
-| Checkout | [`checkedOut()`](#ecom-checkout) | [`checkoutCanceled()`](#ecom-checkout-fail)/[`productRemoved()`](#ecom-checkout-remove) | 
-| Purchase | [`purchased()`](#ecom-purchase) | [`purchaseCanceled()`](#ecom-purchase-fail) | 
-| Promise Fulfillment | [`promiseFulfilled()`](#ecom-promise-fulfillment) | [`promiseUnfulfilled()`](#ecom-promise-fulfillment-fail) | 
+| Product Upsell | [`upsold()`](#ecom-upsell) | [`upsellDismissed()`](#ecom-upsell-fail) |
+| Checkout | [`checkedOut()`](#ecom-checkout) | [`checkoutCanceled()`](#ecom-checkout-fail) / [`productRemoved()`](#ecom-checkout-remove) |
+| Purchase | [`purchased()`](#ecom-purchase) | [`purchaseCanceled()`](#ecom-purchase-fail) |
+| Promise Fulfillment | [`promiseFulfilled()`](#ecom-promise-fulfillment) | [`promiseUnfulfilled()`](#ecom-promise-fulfillment-fail) |
 | Product Disposition | [`productKept()`](#ecom-product-outcome) | [`productReturned()`](#ecom-product-outcome-fail) |
 | Referral | [`referral()`](#ecom-referral) | [`referralDeclined()`](#ecom-referral-fail) |
 
 <br/>
 
-### Step 6 - Instrument Customer Journey Milestones <a id="step-6"></a>
+### Step 6 - Instrument Customer Journey Milestones <a id='step-6'></a>
 
 Next, you will want to instrument your website/application/backend/service for the identified Customer Journey Milestones [Step 2](#step-2).
 We have provided several SDK calls to shortcut your instrumentation here as well.  
@@ -199,23 +202,21 @@ Milestones break down into two types (click on a call to see usage):
 | Features | Content |
 | --- | --- |
 | [`featureAttempted()`](#feature-started) | [`contentViewed()`](#content-viewed) |
-| [`featureFailed()`](#feature-failed) | [`contentEdited()`](#content-edited) |
-| [`featureCompleted()`](#feature-complete) | [`contentCreated()`](#content-created) |
-| | [`contentDeleted()`](#content-deleted) |
-| | [`contentRequested()`](#content-requested)|
-| | [`contentSearched()`](#content-searched)|
+| [`featureFailed()`](#feature-failed) | [`contentCreated()`](#content-created) / [`contentEdited()`](#content-edited) |
+| [`featureCompleted()`](#feature-complete) |  [`contentDeleted()`](#content-deleted) / [`contentArchived()`](#content-archived) |
+| | [`contentRequested()`](#content-requested)/[`contentSearched()`](#content-searched)|
 
 <br/>
 
-### Step 7 - Commit Points <a id="step-7"></a>
+### Step 7 - Commit Points <a id='step-7'></a>
 
 
-Once instrumented, you"ll want to select appropriate [commit points](#commit). Committing will initiate the analysis on your behalf by Xenon View.
+Once instrumented, you'll want to select appropriate [commit points](#commit). Committing will initiate the analysis on your behalf by Xenon View.
 
 <br/>
 <br/>
 
-### Step 8 (Optional) - Group Customer Journeys <a id="step-8"></a>
+### Step 8 (Optional) - Group Customer Journeys <a id='step-8'></a>
 
 All the customer journeys (milestones and outcomes) are anonymous by default.
 For example, if a Customer interacts with your brand in the following way:
@@ -232,14 +233,14 @@ Deanonymizing is optional. Basic matching of the customer journey with outcomes 
 
 <br/>
 
-### Step 9 - Analysis <a id="step-9"></a>
+### Step 9 - Analysis <a id='step-9'></a>
 
 
 Once you have released your instrumented code, you can head to [XenonView](https://xenonview.com/) to view the analytics.
 
 <br/>
 
-### Step 10 - Perform Experiments <a id="step-10"></a>
+### Step 10 - Perform Experiments <a id='step-10'></a>
 
 There are multiple ways you can experiment using XenonView. We"ll focus here on three of the most common: time, platform, and variant based cohorts.
 
@@ -260,7 +261,7 @@ You can [Platform](#platforming) any journey collection before collecting data. 
 * Device model (Pixel, iPhone 14, Docker Container, Linux VM, Dell Server, etc.)
 * A software version of your application.
 
-As an example, let"s say you have an iPhone and Android mobile application and you want to see if an outcome is more successful on one device verse the other.
+As an example, let's say you have an iPhone and Android mobile application and you want to see if an outcome is more successful on one device verse the other.
 You can platform before the section of code that performs that flow. After collecting the data, you can filter in the XenonView UI based on each platform to
 observe the results.
 
@@ -270,13 +271,13 @@ observe the results.
 
 [back to top](#contents)
 
-## Detailed Usage <a id="detailed-usage"></a>
+## Detailed Usage <a id='detailed-usage'></a>
 The following section gives detailed usage instructions and descriptions.
 It provides code examples for each of the calls.
 
 <br/>
 
-### Installation <a id="installation"></a>
+### Installation <a id='installation'></a>
 
 <br/>
 
@@ -329,9 +330,9 @@ Then including as a dependency in your app in the targets section:
 
 [back to top](#contents)
 
-### Instantiation <a id="instantiation"></a>
+### Instantiation <a id='instantiation'></a>
 
-The View SDK is a Swift package you"ll need to include in your application. After inclusion, you"ll need to init the singleton object:
+The View SDK is a Swift package you'll need to include in your application. After inclusion, you'll need to init the singleton object:
 
 ```swift
 import xenon_view_sdk
@@ -360,7 +361,7 @@ struct ExampleApp: App {
 }
 ```
 
-Of course, you"ll have to make the following modifications to the above code:
+Of course, you'll have to make the following modifications to the above code:
 - Replace `<API KEY>` with your [api key](https://xenonview.com/api-get)
 
 > **Note:** For older OS support, surround your calls with: 
@@ -375,11 +376,11 @@ if #available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *) {
 
 [back to top](#contents)
 
-### Service/Subscription/SaaS Related Business Outcomes <a id="saas"></a>
+### Service/Subscription/SaaS Related Business Outcomes <a id='saas'></a>
 
 <br/>
 
-#### Lead Capture  <a id="saas-lead-capture"></a>
+#### Lead Capture  <a id='saas-lead-capture'></a>
 Use this call to track Lead Capture (emails, phone numbers, etc.)
 You can add a specifier string to the call to differentiate as follows:
 
@@ -401,7 +402,7 @@ try! Xenon().leadCaptured(specifier: phoneSpecified)
 
 <br/>
 
-##### ```leadCaptureDeclined()``` <a id="saas-lead-capture-fail"></a>
+##### ```leadCaptureDeclined()``` <a id='saas-lead-capture-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 ```swift
 import xenon_view_sdk
@@ -418,7 +419,7 @@ try! Xenon().leadCaptureDeclined(specifier: phoneSpecified)
 
 <br/>
 
-#### Account Signup  <a id="saas-account-signup"></a>
+#### Account Signup  <a id='saas-account-signup'></a>
 Use this call to track when customers signup for an account.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -444,7 +445,7 @@ try! Xenon().accountSignup(specifier: Email)
 
 <br/>
 
-##### ```accountSignupDeclined()``` <a id="saas-account-signup-fail"></a>
+##### ```accountSignupDeclined()``` <a id='saas-account-signup-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 ```swift
 import xenon_view_sdk
@@ -465,7 +466,7 @@ try! Xenon().accountSignupDeclined(specifier: Email)
 
 <br/>
 
-#### Application Installation  <a id="saas-application-install"></a>
+#### Application Installation  <a id='saas-application-install'></a>
 Use this call to track when customers install your application.
 
 <br/>
@@ -480,7 +481,7 @@ try! Xenon().applicationInstalled()
 
 <br/>
 
-##### ```applicationNotInstalled()``` <a id="saas-application-install-fail"></a>
+##### ```applicationNotInstalled()``` <a id='saas-application-install-fail'></a>
 > :memo: Note: You want consistency between success and failure.
 ```swift
 import xenon_view_sdk
@@ -491,7 +492,7 @@ try! Xenon().applicationNotInstalled()
 
 <br/>
 
-#### Initial Subscription  <a id="saas-initial-subscription"></a>
+#### Initial Subscription  <a id='saas-initial-subscription'></a>
 Use this call to track when customers initially subscribe.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -506,9 +507,14 @@ let Gold = "Gold"
 let Platium = "Platium"
 let annualSilver = "Silver Annual"
 let method = "Stripe" // optional
+let price = "$25" // optional
+let term = "30d" // optional
 
 // Successful subscription of the lowest tier with Stripe
 try! Xenon().initialSubscription(tier: Silver, method: method)
+
+// Successful subscription of the lowest tier with Stripe for $25 for term
+try! Xenon().initialSubscription(tier: Silver, method: method, price: price, term:term)
 // ...
 // Successful subscription of the middle tier
 try! Xenon().initialSubscription(tier: Gold)
@@ -522,7 +528,7 @@ try! Xenon().initialSubscription(tier: annualSilver)
 
 <br/>
 
-##### ```subscriptionDeclined()``` <a id="saas-initial-subscription-fail"></a>
+##### ```subscriptionDeclined()``` <a id='saas-initial-subscription-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 ```swift
 import xenon_view_sdk
@@ -532,6 +538,8 @@ let Gold = "Gold"
 let Platium = "Platium"
 let annualSilver = "Silver Annual"
 let method = "Stripe" // optional
+let price = "$25" // optional
+let term = "30d" // optional
 
 // Unsuccessful subscription of the lowest tier
 try! Xenon().subscriptionDeclined(tier: Silver)
@@ -544,11 +552,14 @@ try! Xenon().subscriptionDeclined(tier: Platium)
 // ...
 // Unsuccessful subscription of an annual period
 try! Xenon().subscriptionDeclined(tier: annualSilver, method: method)
+// ...
+// Unsuccessful subscription of an annual period for $25 for term
+try! Xenon().subscriptionDeclined(tier: annualSilver, method: method, price: price, term: term)
 ```
 
 <br/>
 
-#### Subscription Renewal  <a id="saas-renewed-subscription"></a>
+#### Subscription Renewal  <a id='saas-renewed-subscription'></a>
 Use this call to track when customers renew.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -563,9 +574,14 @@ let Gold = "Gold"
 let Platium = "Platium"
 let annualSilver = "Silver Annual"
 let method = "Stripe" //optional
+let price = "$25" //optional
+let term = "30d" //optional
 
 // Successful renewal of the lowest tier with Stripe
 try! Xenon().subscriptionRenewed(tier: Silver, method: method)
+// ...
+// Successful renewal of the lowest tier with Stripe for $25 for term
+try! Xenon().subscriptionRenewed(tier: Silver, method: method, price: price, term: term)
 // ...
 // Successful renewal of the middle tier
 try! Xenon().subscriptionRenewed(tier: Gold)
@@ -580,7 +596,7 @@ try! Xenon().subscriptionRenewed(tier: annualSilver)
 
 <br/>
 
-##### ```subscriptionCanceled()``` <a id="saas-renewed-subscription-fail"></a>
+##### ```subscriptionCanceled()``` <a id='saas-renewed-subscription-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 
 ```swift
@@ -591,6 +607,8 @@ let tierGold = "Gold"
 let tierPlatium = "Platium"
 let annualSilver = "Silver Annual"
 let method = "Stripe" //optional
+let price = "$25" //optional
+let term = "30d" //optional
 
 // Canceled subscription of the lowest tier
 try! Xenon().subscriptionCanceled(tier: Silver)
@@ -603,12 +621,47 @@ try! Xenon().subscriptionCanceled(tier: Platium)
 // ...
 // Canceled subscription of an annual period with Stripe
 try! Xenon().subscriptionCanceled(tier: annualSilver, method: method)
+// ...
+// Canceled subscription of an annual period with Stripe for $25
+try! Xenon().subscriptionCanceled(tier: annualSilver, method: method, price: price, term: term)
 ```
 
 <br/>
 
-#### Subscription Upsold  <a id="saas-upsell-subscription"></a>
-Use this call to track when a Customer upgrades their subscription.
+##### ```subscriptionPaused()``` <a id='saas-paused-subscription'></a>
+
+> :memo: Note: You want to be consistent between success and failure and match the specifiers
+```swift
+import xenon_view_sdk
+
+let tierSilver = "Silver Monthly"
+let tierGold = "Gold"
+let tierPlatium = "Platium"
+let annualSilver = "Silver Annual"
+let method = "Stripe" //optional
+let price = "$25" //optional
+let term = "30d" //optional
+
+// Paused subscription of the lowest tier
+try! Xenon().subscriptionPaused(tier: Silver)
+// ...
+// Paused subscription of the middle tier
+try! Xenon().subscriptionPaused(tier: Gold)
+// ...
+// Paused subscription of the top tier
+try! Xenon().subscriptionPaused(tier: Platium)
+// ...
+// Paused subscription of an annual period with Stripe
+try! Xenon().subscriptionPaused(tier: annualSilver, method: method)
+// ...
+// Paused subscription of an annual period with Stripe for $25
+try! Xenon().subscriptionPaused(tier: annualSilver, method: method, price: price, term: term)
+```
+
+<br/>
+
+#### Subscription Upsold  <a id='saas-upsell-subscription'></a>
+Use this call to track when a Customer upgrades their subscription.  
 You can add a specifier string to the call to differentiate as follows:
 
 <br/>
@@ -622,11 +675,16 @@ let Gold = "Gold Monthly"
 let Platium = "Platium"
 let annualGold = "Gold Annual"
 let method = "Stripe" // optional
+let price = "$25" // optional
+let term = "30d" // optional
 
 // Assume already subscribed to Silver
 
 // Successful upsell of the middle tier with Stripe
 try! Xenon().subscriptionUpsold(tier: Gold, method: method)
+// ...
+// Successful upsell of the middle tier with Stripe for $25 for term
+try! Xenon().subscriptionUpsold(tier: Gold, method: method, price: price, term: term)
 // ...
 // Successful upsell of the top tier
 try! Xenon().subscriptionUpsold(tier: Platium)
@@ -637,7 +695,7 @@ try! Xenon().subscriptionUpsold(tier: annualGold)
 
 <br/>
 
-##### ```subscriptionUpsellDeclined()``` <a id="saas-upsell-subscription-fail"></a>
+##### ```subscriptionUpsellDeclined()``` <a id='saas-upsell-subscription-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 
 ```swift
@@ -647,6 +705,8 @@ let Gold = "Gold Monthly"
 let Platium = "Platium"
 let annualGold = "Gold Annual"
 let method = "Stripe" //optional
+let price = "$25" //optional
+let term = "30d" //optional
 
 // Assume already subscribed to Silver
 
@@ -658,11 +718,87 @@ try! Xenon().subscriptionUpsellDeclined(tier: Platium)
 // ...
 // Rejected upsell of middle tier - annual period with Stripe
 try! Xenon().subscriptionUpsellDeclined(tier: annualGold, method: method)
+// ...
+// Rejected upsell of middle tier - annual period with Stripe for $25 for term
+try! Xenon().subscriptionUpsellDeclined(tier: annualGold, method: method, price: price, term: term)
 ```
 
 <br/>
 
-#### Referrals  <a id="saas-referral"></a>
+##### ```subscriptionDownsell()``` <a id='saas-downsell-subscription'></a>
+> :memo: Note: You want to be consistent between success and failure and match the specifiers
+```swift
+import xenon_view_sdk
+
+let Gold = "Gold Monthly"
+let Platium = "Platium"
+let annualGold = "Gold Annual"
+let method = "Stripe" //optional
+let price = "$25" //optional
+let term = "30d" //optional
+
+// Assume already subscribed to Platium
+
+// Downsell to Gold
+try! Xenon().subscriptionDownsell(tier: Gold)
+// ...
+// Downsell to Gold annual with method
+try! Xenon().subscriptionDownsell(tier: annualGold, method: method)
+// ...
+// Downsell to Gold - annual period with Stripe for $15 for term
+try! Xenon().subscriptionDownsell(tier: annualGold, method: method, price: price, term: term)
+```
+
+<br/>
+
+#### Ad Clicked  <a id='saas-ad-clicked'></a>
+Use this call to track when customers click on an Advertisement.
+You can add a specifier string to the call to differentiate as follows:
+
+<br/>
+
+```swift
+import xenon_view_sdk
+
+let provider = "AdMob"
+let id = "ID-1234" //optional
+let price = "$0.25" //optional
+
+// Click an Ad from AdMob
+try! Xenon().adClicked(provider: provider)
+// ...
+// Click an Ad from AdMob identified by ID-1234
+try! Xenon().adClicked(provider: provider, id: id)
+// ...
+// Click an Ad from AdMob identified by ID-1234 with price
+try! Xenon().adClicked(provider: provider, id: id, price: price)
+```
+
+<br/>
+
+
+##### ```adIgnored()```  <a id='saas-ad-ignored'></a>
+```swift
+import xenon_view_sdk
+
+let provider = "AdMob"
+let id = "ID-1234" //optional
+let price = "$0.25" //optional
+
+// No action on an Ad from AdMob
+try! Xenon().adIgnored(provider: provider)
+// ...
+// No action on an Ad from AdMob identified by ID-1234
+try! Xenon().adIgnored(provider: provider, id: id)
+// ...
+// No action on an Ad from AdMob identified by ID-1234 with price
+try! Xenon().adIgnored(provider: provider, id: id, price: price)
+```
+
+<br/>
+
+
+#### Referral  <a id='saas-referral'></a>
 Use this call to track when customers refer someone to your offering.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -684,7 +820,7 @@ try! Xenon().referral(kind: kind)
 
 <br/>
 
-##### ```referralDeclined()``` <a id="saas-referral-fail"></a>
+##### ```referralDeclined()``` <a id='saas-referral-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 
 ```swift
@@ -703,12 +839,12 @@ try! Xenon().referralDeclined(kind: kind)
 
 [back to top](#contents)
 
-### Ecommerce Related Outcomes <a id="ecom"></a>
+### Ecommerce Related Outcomes <a id='ecom'></a>
 
 
 <br/>
 
-#### Lead Capture  <a id="ecom-lead-capture"></a>
+#### Lead Capture  <a id='ecom-lead-capture'></a>
 Use this call to track Lead Capture (emails, phone numbers, etc.)
 You can add a specifier string to the call to differentiate as follows:
 
@@ -731,7 +867,7 @@ try! Xenon().leadCaptured(specifier: phoneSpecified)
 
 <br/>
 
-##### ```leadCaptureDeclined()``` <a id="saas-lead-capture-fail"></a>
+##### ```leadCaptureDeclined()``` <a id='ecom-lead-capture-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 ```swift
 import xenon_view_sdk
@@ -748,7 +884,7 @@ try! Xenon().leadCaptureDeclined(specifier: phoneSpecified)
 
 <br/>
 
-#### Account Signup  <a id="ecom-account-signup"></a>
+#### Account Signup  <a id='ecom-account-signup'></a>
 Use this call to track when customers signup for an account.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -774,7 +910,7 @@ try! Xenon().accountSignup(specifier: Email)
 
 <br/>
 
-##### ```accountSignupDeclined()``` <a id="saas-account-signup-fail"></a>
+##### ```accountSignupDeclined()``` <a id='ecom-account-signup-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 ```swift
 import xenon_view_sdk
@@ -795,7 +931,7 @@ try! Xenon().accountSignupDeclined(specifier: Email)
 
 <br/>
 
-#### Add Product To Cart  <a id="ecom-product-to-cart"></a>
+#### Add Product To Cart  <a id='ecom-product-to-cart'></a>
 Use this call to track when customers add a product to the cart.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -818,7 +954,7 @@ try! Xenon().productAddedToCart(keyboard)
 
 <br/>
 
-##### ```productNotAddedToCart()``` <a id="ecom-product-to-cart-fail"></a>
+##### ```productNotAddedToCart()``` <a id='ecom-product-to-cart-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 
 ```swift
@@ -836,7 +972,7 @@ try! Xenon().productNotAddedToCart(product: keyboard)
 
 <br/>
 
-#### Upsold Additional Products  <a id="ecom-upsell"></a>
+#### Upsold Additional Products  <a id='ecom-upsell'></a>
 Use this call to track when you upsell additional product(s) to customers.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -849,17 +985,18 @@ import xenon_view_sdk
 
 let laptop = "Dell XPS"
 let keyboard = "Apple Magic Keyboard"
+let keyboardValue = "$139" //optional
 
 // upsold a laptop
 try! Xenon().upsold(product: laptop)
 // ...
-// upsold a keyboard
-try! Xenon().upsold(product: keyboard)
+// upsold a keyboard with price
+try! Xenon().upsold(product: keyboard, price: keyboardValue)
 ```
 
 <br/>
 
-##### ```upsellDismissed()``` <a id="ecom-upsell-fail"></a>
+##### ```upsellDismissed()``` <a id='ecom-upsell-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 
 ```swift
@@ -867,17 +1004,18 @@ import xenon_view_sdk
 
 let laptop = "Dell XPS"
 let keyboard = "Apple Magic Keyboard"
+let keyboardValue = "$139" //optional
 
 // Doesn"t add a laptop during upsell
 try! Xenon().upsellDismissed(product: laptop)
 // ...
-// Doesn"t add a keyboard during upsell
-try! Xenon().upsellDismissed(product: keyboard)
+// Doesn't add a keyboard during upsell with price
+try! Xenon().upsellDismissed(product: keyboard, price: keyboardValue)
 ```
 
 <br/>
 
-#### Customer Checks Out  <a id="ecom-checkout"></a>
+#### Customer Checks Out  <a id='ecom-checkout'></a>
 Use this call to track when your Customer is checking out.
 
 <br/>
@@ -893,7 +1031,7 @@ try! Xenon().checkedOut()
 
 <br/>
 
-##### ```checkoutCanceled()``` <a id="ecom-checkout-fail"></a>
+##### ```checkoutCanceled()``` <a id='ecom-checkout-fail'></a>
 
 ```swift
 import xenon_view_sdk
@@ -905,7 +1043,7 @@ try! Xenon().checkoutCanceled()
 
 <br/>
 
-##### ```productRemoved()``` <a id="ecom-checkout-remove"></a>
+##### ```productRemoved()``` <a id='ecom-checkout-remove'></a>
 
 ```swift
 import xenon_view_sdk
@@ -922,7 +1060,7 @@ try! Xenon().productRemoved(product: keyboard)
 
 <br/>
 
-#### Customer Completes Purchase  <a id="ecom-purchase"></a>
+#### Customer Completes Purchase  <a id='ecom-purchase'></a>
 Use this call to track when your Customer completes a purchase.
 
 <br/>
@@ -933,30 +1071,37 @@ Use this call to track when your Customer completes a purchase.
 import xenon_view_sdk
 
 let method = "Stripe"
+let price = "$2011" // optional
 
 // Successful Purchase
 try! Xenon().purchased(method: method)
+// ...
+// Successful Purchase
+try! Xenon().purchased(method: method, price: price)
 ```
 
 <br/>
 
-##### ```purchaseCanceled()``` <a id="ecom-purchase-fail"></a>
+##### ```purchaseCanceled()``` <a id='ecom-purchase-fail'></a>
 
 ```swift
 import xenon_view_sdk
 
 let method = "Stripe" // optional
+let price = "$2011" // optional
 
 //Customer cancels the purchase.
 try! Xenon().purchaseCanceled()
 // -OR-
 try! Xenon().purchaseCanceled(method: method)
+// -OR-
+try! Xenon().purchaseCanceled(method: method, price: price)
 
 ```
 
 <br/>
 
-#### Purchase Shipping  <a id="ecom-promise-fulfillment"></a>
+#### Purchase Shipping  <a id='ecom-promise-fulfillment'></a>
 Use this call to track when your Customer receives a purchase.
 
 <br/>
@@ -973,7 +1118,7 @@ try! Xenon().promiseFulfilled()
 
 <br/>
 
-##### ```promiseUnfulfilled(()``` <a id="ecom-promise-fulfillment-fail"></a>
+##### ```promiseUnfulfilled(()``` <a id='ecom-promise-fulfillment-fail'></a>
 
 ```swift
 import xenon_view_sdk
@@ -984,7 +1129,7 @@ try! Xenon().promiseUnfulfilled()
 
 <br/>
 
-#### Customer Keeps or Returns Product  <a id="ecom-product-outcome"></a>
+#### Customer Keeps or Returns Product  <a id='ecom-product-outcome'></a>
 Use this call to track if your Customer keeps the product.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -1007,7 +1152,7 @@ try! Xenon().productKept(product: keyboard)
 
 <br/>
 
-##### ```productReturned()``` <a id="ecom-product-outcome-fail"></a>
+##### ```productReturned()``` <a id='ecom-product-outcome-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 
 ```swift
@@ -1025,7 +1170,7 @@ try! Xenon().productReturned(product: keyboard)
 
 <br/>
 
-#### Referrals  <a id="ecom-referral"></a>
+#### Referrals  <a id='ecom-referral'></a>
 Use this call to track when customers refer someone to your offering.
 You can add a specifier string to the call to differentiate as follows:
 
@@ -1047,7 +1192,7 @@ try! Xenon().referral(kind: kind)
 
 <br/>
 
-##### ```referralDeclined()``` <a id="saas-referral-fail"></a>
+##### ```referralDeclined()``` <a id='ecom-referral-fail'></a>
 > :memo: Note: You want to be consistent between success and failure and match the specifiers
 
 ```swift
@@ -1066,7 +1211,7 @@ try! Xenon().referralDeclined(kind: kind)
 
 [back to top](#contents)
 
-### Customer Journey Milestones <a id="milestones"></a>
+### Customer Journey Milestones <a id='milestones'></a>
 
 As a customer interacts with your brand (via Advertisements, Marketing Website, Product/Service, etc.), they journey through a hierarchy of interactions.
 At the top level are business outcomes. In between Outcomes, they may achieve other milestones, such as interacting with content and features.
@@ -1078,13 +1223,13 @@ As of right now, Customer Journey Milestones break down into two categories:
 
 <br/>
 
-#### Feature Usage  <a id="feature-usage"></a>
-Features are your product/application/service"s traits or attributes that deliver value to your customers.
+#### Feature Usage  <a id='feature-usage'></a>
+Features are your product/application/service's traits or attributes that deliver value to your customers.
 They differentiate your offering in the market. Typically, they are made up of and implemented by functions.
 
 <br/>
 
-##### ```featureAttempted()``` <a id="feature-started"></a>
+##### ```featureAttempted()``` <a id='feature-started'></a>
 Use this function to indicate the start of feature usage.
 
 ```swift
@@ -1101,7 +1246,7 @@ try! Xenon().featureAttempted(feature: name)
 
 <br/>
 
-##### ```featureCompleted()``` <a id="feature-complete"></a>
+##### ```featureCompleted()``` <a id='feature-complete'></a>
 Use this function to indicate the successful completion of the feature.
 
 ```swift
@@ -1129,7 +1274,7 @@ try! Xenon().featureCompleted(feature: name)
 
 <br/>
 
-##### ```featureFailed()``` <a id="feature-failed"></a>
+##### ```featureFailed()``` <a id='feature-failed'></a>
 Use this function to indicate the unsuccessful completion of a feature being used (often in the exception handler).
 
 ```swift
@@ -1158,9 +1303,9 @@ catch(err) {
 
 [back to top](#contents)
 
-#### Content Interaction  <a id="content-interaction"></a>
+#### Content Interaction  <a id='content-interaction'></a>
 Content is created assets/resources for your site/service/product.
-It can be static or dynamic. You will want to mark content that contributes to your Customer"s experience or buying decision.
+It can be static or dynamic. You will want to mark content that contributes to your Customer's experience or buying decision.
 Typical examples:
 * Blog
 * Blog posts
@@ -1175,7 +1320,7 @@ Typical examples:
 
 <br/>
 
-##### ```contentViewed()``` <a id="content-viewed"></a>
+##### ```contentViewed()``` <a id='content-viewed'></a>
 Use this function to indicate a view of specific content.
 
 ```swift
@@ -1192,7 +1337,7 @@ try! Xenon().contentViewed(type: contentType)
 
 <br/>
 
-##### ```contentEdited()``` <a id="content-edited"></a>
+##### ```contentEdited()``` <a id='content-edited'></a>
 Use this function to indicate the editing of specific content.
 
 ```swift
@@ -1212,7 +1357,7 @@ try! Xenon().contentEdited(type: contentType)
 
 <br/>
 
-##### ```contentCreated()``` <a id="content-created"></a>
+##### ```contentCreated()``` <a id='content-created'></a>
 Use this function to indicate the creation of specific content.
 
 ```swift
@@ -1229,7 +1374,7 @@ try! Xenon().contentCreated(type: contentType)
 
 <br/>
 
-##### ```contentDeleted()``` <a id="content-deleted"></a>
+##### ```contentDeleted()``` <a id='content-deleted'></a>
 Use this function to indicate the deletion of specific content.
 
 ```swift
@@ -1246,7 +1391,23 @@ try! Xenon().contentDeleted(type: contentType)
 
 <br/>
 
-##### ```contentRequested()``` <a id="content-requested"></a>
+##### ```contentArchived()``` <a id='content-archived'></a>
+Use this function to indicate archiving specific content.
+```swift
+import xenon_view_sdk
+
+let contentType = "Blog Comment"
+let identifier = "how-to-install-xenon-view" // optional
+
+//Customer archived their comment on a blog post
+try! Xenon().contentArchived(type: contentType, identifier: identifier)
+// -OR-
+try! Xenon().contentArchived(type: contentType)
+```
+
+<br/>
+
+##### ```contentRequested()``` <a id='content-requested'></a>
 Use this function to indicate the request for specific content.
 
 ```swift
@@ -1263,7 +1424,7 @@ try! Xenon().contentRequested(type: contentType)
 
 <br/>
 
-##### ```contentSearched()``` <a id="content-searched"></a>
+##### ```contentSearched()``` <a id='content-searched'></a>
 Use this function to indicate when a user searches.
 
 ```swift
@@ -1279,7 +1440,7 @@ try! Xenon().contentSearched(type: contentType)
 
 [back to top](#contents)
 
-### Commit Points   <a id="commiting"></a>
+### Commit Points   <a id='commiting'></a>
 
 
 Business Outcomes and Customer Journey Milestones are tracked locally in memory until you commit them to the Xenon View system.
@@ -1302,7 +1463,7 @@ try! Xenon().commit()
 
 [back to top](#contents)
 
-### Heartbeats   <a id="heartbeat"></a>
+### Heartbeats   <a id='heartbeat'></a>
 
 
 Business Outcomes and Customer Journey Milestones are tracked locally in memory until you commit them to the Xenon View system.
@@ -1328,7 +1489,7 @@ This call commits any uncommitted journeys to Xenon View for analysis and update
 
 [back to top](#contents)
 
-### Platforming  <a id="platforming"></a>
+### Platforming  <a id='platforming'></a>
 
 After you have initialized View, you can optionally specify platform details such as:
 - Operating System Name 
@@ -1436,7 +1597,7 @@ try! Xenon().resetVariants()
 
 [back to top](#contents)
 
-### Customer Journey Grouping <a id="deanonymizing-journeys"></a>
+### Customer Journey Grouping <a id='deanonymizing-journeys'></a>
 
 
 Xenon View supports both anonymous and grouped (known) journeys.
@@ -1457,6 +1618,7 @@ Usage is as follows:
 
 <br/>
 
+#### `deanonymize()`
 ```swift
 import xenon_view_sdk
 
@@ -1476,24 +1638,24 @@ try! await opSubject.deanonymize(person: person)
 
 This call deanonymizes every journey committed to a particular user.
 
-> **:memo: Note:** With journeys that span multiple platforms (e.g., Website->iPhone->API backend), you can group the Customer Journeys by deanonymizing each.
+> **:memo: Note:** With journeys that span multiple platforms (e.g., Website->Android->API backend), you can group the Customer Journeys by deanonymizing each.
 
 
 <br/>
 
 [back to top](#contents)
 
-### Other Operations <a id="other"></a>
+### Other Operations <a id='other'></a>
 
 There are various other operations that you might find helpful:
 
 <br/>
 <br/>
 
-#### Error handling <a id="errors"></a>
-In the event of an API error when committing, the method returns a [Task](https://developer.apple.com/documentation/swift/task).
+#### Error handling <a id='errors'></a>
+In the event of an API error, an exception occurs with the response from the API as [Requests response object](https://docs.python-requests.org/en/latest/user/quickstart/#response-content):
 
-> **Note:** The default handling of this situation will restore the journey (appending newly added pageViews, events, etc.) for future committing. If you want to do something special, you can do so like this:
+> **:memo: Note:** The default handling of this situation will restore the journey (appending newly added pageViews, events, etc.) for future committing. If you want to do something special, you can do so like this:
 
 ```swift
 import xenon_view_sdk
@@ -1517,7 +1679,7 @@ do {
 
 <br/>
 
-#### Custom Milestones <a id="custom"></a>
+#### Custom Milestones <a id='custom'></a>
 
 You can add custom milestones if you need more than the current Customer Journey Milestones.
 
@@ -1540,13 +1702,13 @@ This call adds a custom milestone to the customer journey.
 
 <br/>
 
-#### Journey IDs <a id="cuuid"></a>
+#### Journey IDs <a id='cuuid'></a>
 Each Customer Journey has an ID akin to a session.
 After committing an Outcome, the ID remains the same to link all the Journeys.
 If you have a previous Customer Journey in progress and would like to append to that, you can get/set the ID.
 
->**:memo: Note:** For JavaScript, the Journey ID is a persistent session variable.
-> Therefore, subsequent Outcomes will reuse the Journey ID if the Customer had a previous browser session.
+>**:memo: Note:** For Swift, the Journey ID is a persistent session variable.
+> Therefore, subsequent Outcomes will reuse the Journey ID if one is available.
 
 
 After you have initialized the Xenon singleton, you can:
